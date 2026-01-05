@@ -1,0 +1,81 @@
+import type { CarOwner } from "../types/carOwner"
+
+export const mockCarOwners: CarOwner[] = [
+  {
+    id: "CO001",
+    name: "Rajesh Kumar",
+    email: "rajesh.kumar@example.com",
+    dob: "1990-05-15",
+    phone: "+91 98765 43210",
+    address: "123, MG Road, Bangalore, Karnataka - 560001",
+    aadhaarNumber: "XXXX XXXX 1234",
+    drivingLicenseNumber: "KA05 20XX XXXX 5678",
+    bloodGroup: "O+",
+    kycStatus: {
+      aadhaarFront: "uploaded",
+      aadhaarBack: "uploaded",
+      selfie: "uploaded",
+      drivingLicense: "uploaded",
+      overall: "approved",
+    },
+    wallet: {
+      balance: 15750,
+    },
+    bankDetails: {
+      accountHolderName: "Rajesh Kumar",
+      accountNumber: "1234567890",
+      ifscCode: "HDFC0001234",
+    },
+    rating: 4.8,
+    tripsCompleted: 127,
+    createdAt: "2023-06-15T10:30:00Z",
+  },
+  {
+    id: "CO002",
+    name: "Priya Sharma",
+    email: "priya.sharma@example.com",
+    dob: "1988-08-22",
+    phone: "+91 87654 32109",
+    address: "45, Park Street, Kolkata, West Bengal - 700016",
+    aadhaarNumber: "XXXX XXXX 5678",
+    drivingLicenseNumber: "WB22 20XX XXXX 1234",
+    bloodGroup: "A+",
+    kycStatus: {
+      aadhaarFront: "uploaded",
+      aadhaarBack: "uploaded",
+      selfie: "uploaded",
+      drivingLicense: "uploaded",
+      overall: "approved",
+    },
+    wallet: {
+      balance: 8920,
+    },
+    bankDetails: {
+      accountHolderName: "Priya Sharma",
+      accountNumber: "9876543210",
+      ifscCode: "ICIC0004567",
+    },
+    rating: 4.9,
+    tripsCompleted: 89,
+    createdAt: "2023-08-20T14:15:00Z",
+  },
+  {
+    id: "CO003",
+    name: "Amit Patel",
+    email: "amit.patel@example.com",
+    phone: "+91 76543 21098",
+    kycStatus: {
+      aadhaarFront: "pending",
+      aadhaarBack: "pending",
+      selfie: "pending",
+      drivingLicense: "pending",
+      overall: "pending",
+    },
+    wallet: {
+      balance: 0,
+    },
+    rating: 0,
+    tripsCompleted: 0,
+    createdAt: "2024-12-20T09:00:00Z",
+  },
+]
