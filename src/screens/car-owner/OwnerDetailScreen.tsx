@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
+import React, { useEffect, useState } from "react"
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { ConfirmationDialog, ProfileInfoCard, StatusBadge } from "../../components/owner-profile"
 import { useTheme } from "../../context/ThemeContext"
-import { ProfileInfoCard, StatusBadge, ConfirmationDialog } from "../../components/owner-profile"
-import type { CarOwner } from "../../types/carOwner"
 import { mockCarOwners } from "../../data/mockCarOwners"
+import type { CarOwner } from "../../types/carOwner"
 
 export const OwnerDetailScreen = ({ navigation, route }: any) => {
   const { colors } = useTheme()

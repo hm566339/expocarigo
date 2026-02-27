@@ -1,9 +1,8 @@
 "use client"
 
-import type React from "react"
-import { useState, useEffect, useRef } from "react"
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions, Animated } from "react-native"
 import { useRoute } from "@react-navigation/native"
+import React, { useEffect, useRef, useState } from "react"
+import { Alert, Animated, Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import type { GPSLocation } from "../../types/safety.types"
 
 const { width } = Dimensions.get("window")

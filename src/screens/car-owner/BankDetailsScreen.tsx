@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native"
-import { useTheme } from "../../context/ThemeContext"
+import React, { useEffect, useState } from "react"
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { InputField } from "../../components/owner-profile"
+import { useTheme } from "../../context/ThemeContext"
 import { mockCarOwners } from "../../data/mockCarOwners"
 
 export const BankDetailsScreen = ({ route }: any) => {

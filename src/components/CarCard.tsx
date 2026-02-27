@@ -1,8 +1,8 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native"
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { useTheme } from "../context/ThemeContext"
 import type { Car } from "../types"

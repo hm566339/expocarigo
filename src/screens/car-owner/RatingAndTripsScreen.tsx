@@ -1,7 +1,7 @@
 "use client"
 
 import { useAuth } from "@/src/context/AuthContext"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   ActivityIndicator,
   ScrollView,

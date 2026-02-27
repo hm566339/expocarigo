@@ -3,12 +3,12 @@
  * Handles navigation for authentication screens
  */
 
-import type React from "react"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { LoginScreen } from "../screens/auth/LoginScreen"
-import { RegisterScreen } from "../screens/auth/RegisterScreen"
+import React from "react"
 import { ForgotPasswordScreen } from "../screens/auth/ForgotPasswordScreen"
+import { LoginScreen } from "../screens/auth/LoginScreen"
 import { OTPVerificationScreen } from "../screens/auth/OTPVerificationScreen"
+import { RegisterScreen } from "../screens/auth/RegisterScreen"
 
 export type AuthStackParamList = {
   Login: undefined

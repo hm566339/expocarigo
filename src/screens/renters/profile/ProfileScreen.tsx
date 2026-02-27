@@ -1,4 +1,5 @@
 "use client"
+import React from "react"
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import type { NavigationProp } from "../../../navigation/types"
 import { useAuthStore } from "../../../services/storage/store/auth.store"

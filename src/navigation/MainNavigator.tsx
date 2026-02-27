@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import React from "react"
 import PaymentScreen from "../screens/renters/booking/PaymentScreen"
 import { default as BookingsScreen, default as BookingSummaryScreen } from "../screens/renters/bookings/BookingsScreen"
 import CarDetailScreen from "../screens/renters/cars/CarDetailScreen"

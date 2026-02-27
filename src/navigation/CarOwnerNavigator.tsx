@@ -1,5 +1,6 @@
 "use client"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import React from "react"
 import { BankDetailsScreen } from "../screens/car-owner/BankDetailsScreen"
 import { CreateCarOwnerScreen } from "../screens/car-owner/CreateCarOwnerScreen"
 import DownloadDocumant from "../screens/car-owner/DownloadDocumant"
@@ -11,6 +12,7 @@ import { RatingAndTripsScreen } from "../screens/car-owner/RatingAndTripsScreen"
 import { UpdateCarOwnerProfileScreen } from "../screens/car-owner/UpdateCarOwnerProfileScreen"
 import { ViewCarOwnerProfileScreen } from "../screens/car-owner/ViewCarOwnerProfileScreen"
 import { HelpAndSupportScreen, NotificationsScreen, SettingsScreen, TermsAndPoliciesScreen } from "../screens/common"
+import PickLocationScreen from "../screens/owner/PickLocationScreen"
 
 const Stack = createNativeStackNavigator()
 
@@ -66,6 +68,9 @@ export const CarOwnerNavigator = () => {
       <Stack.Screen name="settingsScreen" component={SettingsScreen} options={{ title: "Owner Details" }} />
 
       <Stack.Screen name="termsAndPoliciesScreen" component={TermsAndPoliciesScreen} options={{ title: "Owner Details" }} />
+
+      <Stack.Screen name="PickLocation" component={PickLocationScreen} />
+
 
 
     </Stack.Navigator>

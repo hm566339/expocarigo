@@ -1,8 +1,7 @@
 "use client"
 
-import type React from "react"
-
-import { TouchableOpacity, Text, ActivityIndicator, StyleSheet } from "react-native"
+import React from "react"
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { useTheme } from "../../context/ThemeContext"
 
 interface ButtonProps {
@@ -24,25 +23,24 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const { colors } = useTheme()
 
-  const getBackgroundColor = () => {
-    if (disabled) return colors.disabled
-    if (variant === "primary") return colors.primary
-    if (variant === "secondary") return colors.secondary
-    return "transparent"
-  }
+  const bg =
+    disabled
+      ? colors.disabled
+      : variant === "primary"
+        ? colors.primary
+        : variant === "secondary"
+          ? colors.secondary
+          : "transparent"
 
-  const getTextColor = () => {
-    if (disabled) return colors.textSecondary
-    if (variant === "outline") return colors.primary
-    return "#FFFFFF"
-  }
+  const textColor =
+    disabled ? colors.textSecondary : variant === "outline" ? colors.primary : "#fff"
 
   return (
     <TouchableOpacity
       style={[
         styles.button,
         {
-          backgroundColor: getBackgroundColor(),
+          backgroundColor: bg,
           borderColor: variant === "outline" ? colors.primary : "transparent",
           borderWidth: variant === "outline" ? 2 : 0,
           width: fullWidth ? "100%" : "auto",
@@ -53,9 +51,9 @@ export const Button: React.FC<ButtonProps> = ({
       activeOpacity={0.7}
     >
       {loading ? (
-        <ActivityIndicator color={getTextColor()} />
+        <ActivityIndicator color={textColor} />
       ) : (
-        <Text style={[styles.buttonText, { color: getTextColor() }]}>{title}</Text>
+        <Text style={[styles.text, { color: textColor }]}>{title}</Text>
       )}
     </TouchableOpacity>
   )
@@ -63,14 +61,13 @@ export const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 16,
+    minHeight: 56,
     paddingHorizontal: 24,
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    minHeight: 56,
   },
-  buttonText: {
+  text: {
     fontSize: 16,
     fontWeight: "600",
   },

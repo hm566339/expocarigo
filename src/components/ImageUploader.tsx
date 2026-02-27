@@ -1,4 +1,5 @@
-import { View, Text, Image, Pressable, Button } from "react-native"
+import React from "react"
+import { Button, Image, Pressable, Text, View } from "react-native"
 
 type Props = {
     title: string

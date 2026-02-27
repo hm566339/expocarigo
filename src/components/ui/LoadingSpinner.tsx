@@ -1,4 +1,5 @@
-import { View, ActivityIndicator, StyleSheet } from "react-native"
+import React from "react"
+import { ActivityIndicator, StyleSheet, View } from "react-native"
 
 interface LoadingSpinnerProps {
   size?: "small" | "large"

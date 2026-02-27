@@ -18,6 +18,7 @@ import VehicleDetailScreen from "../screens/owner/VehicleDetailScreen";
 /* ---------------- Other Tabs ---------------- */
 import EarningsScreen from "../screens/owner/EarningsScreen";
 import OwnerTripsScreen from "../screens/owner/OwnerTripsScreen";
+import PickLocationScreen from "../screens/owner/PickLocationScreen";
 import UpdateCarScreen from "../screens/owner/UpdateCarScreen";
 import ProfileScreen from "../shared/ProfileScreen";
 
@@ -40,6 +41,8 @@ const CarsStack = () => (
         <Stack.Screen name="AddCar" component={AddCarScreen} />
         <Stack.Screen name="VehicleDetail" component={VehicleDetailScreen} />
         <Stack.Screen name="EditVehicle" component={UpdateCarScreen} />
+        <Stack.Screen name="PickLocation" component={PickLocationScreen} />
+
     </Stack.Navigator>
 );
 

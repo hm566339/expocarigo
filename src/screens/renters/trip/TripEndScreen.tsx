@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { ScrollView, StyleSheet, Text, View } from "react-native"
 import { Button } from "../../../components/ui/Button"
 import InputField from "../../../components/ui/InputField"

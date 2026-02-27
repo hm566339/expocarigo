@@ -4,9 +4,8 @@
  * Reusable Input Component with validation
  */
 
-import type React from "react"
-import { useState } from "react"
-import { View, TextInput, Text, StyleSheet, TouchableOpacity, type TextInputProps } from "react-native"
+import React, { useState } from "react"
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, type TextInputProps } from "react-native"
 
 interface CustomInputProps extends TextInputProps {
   label?: string

@@ -12,19 +12,27 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "Camera is required to upload KYC documents",
-        "NSPhotoLibraryUsageDescription": "Photo library access is required to upload KYC documents"
+        "NSPhotoLibraryUsageDescription": "Photo library access is required to upload KYC documents",
+        "NSLocationWhenInUseUsageDescription": "Location is used to show nearby vehicles on map"
       }
     },
     "android": {
       "package": "com.anonymous.carigo",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
+      "usesCleartextTraffic": true,
       "permissions": [
         "INTERNET",
         "CAMERA",
-        "READ_EXTERNAL_STORAGE"
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
       ],
-      "usesCleartextTraffic": true,
+      "config": {
+        "googleMaps": {
+          "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
+        }
+      },
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -49,7 +57,11 @@
           }
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-video",
+      "expo-audio",
+      "expo-font",
+      "expo-asset"
     ],
     "extra": {
       "eas": {

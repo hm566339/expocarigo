@@ -1,4 +1,4 @@
-import { VEHICLE_ENDPOINTS } from "../../config/api.config"
+import { VEHICLE_ENDPOINTS } from "../../config/api.config";
 import {
   AddVehicleRequest,
   AvailabilityRequest,
@@ -7,24 +7,21 @@ import {
   PriceQuoteRequest,
   UserAndVehicleVerifyRequest,
   VehicleDto,
-} from "../../types/vehicle.types"
-import ApiService from "../api.service"
+} from "../../types/vehicle.types";
+import ApiService from "../api.service";
 
 class VehicleService {
   /* =========================================================
      CREATE VEHICLE (MULTIPART | POST)
   ========================================================= */
-  async createVehicle(
-    userId: string,
-    data: AddVehicleRequest
-  ): Promise<void> {
-    const formData = this.buildFormData(data)
+  async createVehicle(userId: string, data: AddVehicleRequest): Promise<void> {
+    const formData = this.buildFormData(data);
 
     await ApiService.upload(
       VEHICLE_ENDPOINTS.CREATE_VEHICLE(userId),
       formData,
-      "POST"
-    )
+      "POST",
+    );
   }
 
   /* =========================================================
@@ -32,54 +29,43 @@ class VehicleService {
   ========================================================= */
   async updateVehicle(
     vehicleId: string,
-    data: Partial<AddVehicleRequest>
+    data: Partial<AddVehicleRequest>,
   ): Promise<VehicleDto> {
-    const formData = this.buildFormData(data)
+    const formData = this.buildFormData(data);
 
     return ApiService.upload(
       VEHICLE_ENDPOINTS.UPDATE_VEHICLE(vehicleId),
       formData,
-      "PUT"
-    )
+      "PUT",
+    );
   }
 
   /* =========================================================
      GET VEHICLE BY ID
   ========================================================= */
   getVehicle(vehicleId: string): Promise<VehicleDto> {
-    return ApiService.get(
-      VEHICLE_ENDPOINTS.GET_VEHICLE(vehicleId)
-    )
+    return ApiService.get(VEHICLE_ENDPOINTS.GET_VEHICLE(vehicleId));
   }
 
   /* =========================================================
      GET VEHICLES BY USER
   ========================================================= */
   getVehiclesByUser(userId: string): Promise<VehicleDto[]> {
-    return ApiService.get(
-      VEHICLE_ENDPOINTS.GET_BY_USER(userId)
-    )
+    return ApiService.get(VEHICLE_ENDPOINTS.GET_BY_USER(userId));
   }
 
   /* =========================================================
      DELETE VEHICLE
   ========================================================= */
   deleteVehicle(vehicleId: string): Promise<void> {
-    return ApiService.delete(
-      VEHICLE_ENDPOINTS.DELETE_VEHICLE(vehicleId)
-    )
+    return ApiService.delete(VEHICLE_ENDPOINTS.DELETE_VEHICLE(vehicleId));
   }
 
   /* =========================================================
      VERIFY USER + VEHICLE
   ========================================================= */
-  verifyUserAndVehicle(
-    payload: UserAndVehicleVerifyRequest
-  ): Promise<boolean> {
-    return ApiService.post(
-      VEHICLE_ENDPOINTS.VERIFY_USER_VEHICLE,
-      payload
-    )
+  verifyUserAndVehicle(payload: UserAndVehicleVerifyRequest): Promise<boolean> {
+    return ApiService.post(VEHICLE_ENDPOINTS.VERIFY_USER_VEHICLE, payload);
   }
 
   /* =========================================================
@@ -88,21 +74,21 @@ class VehicleService {
   getAvailability(
     vehicleId: string,
     from: string,
-    to: string
+    to: string,
   ): Promise<AvailabilitySlotDto[]> {
     return ApiService.get(
-      VEHICLE_ENDPOINTS.GET_AVAILABILITY(vehicleId, from, to)
-    )
+      VEHICLE_ENDPOINTS.GET_AVAILABILITY(vehicleId, from, to),
+    );
   }
 
   addAvailability(
     vehicleId: string,
-    payload: AvailabilityRequest
+    payload: AvailabilityRequest,
   ): Promise<AvailabilitySlotDto> {
     return ApiService.post(
       VEHICLE_ENDPOINTS.ADD_AVAILABILITY(vehicleId),
-      payload
-    )
+      payload,
+    );
   }
 
   /* =========================================================
@@ -110,52 +96,71 @@ class VehicleService {
   ========================================================= */
   getPriceQuote(
     vehicleId: string,
-    payload: PriceQuoteRequest
+    payload: PriceQuoteRequest,
   ): Promise<PriceQuoteDto> {
     return ApiService.post(
       VEHICLE_ENDPOINTS.GET_PRICE_QUOTE(vehicleId),
-      payload
-    )
+      payload,
+    );
   }
 
   /* =========================================================
-     PRIVATE: FORM DATA BUILDER (RN SAFE)
+     GET ALL VEHICLES
+  ========================================================= */
+  getAllVehicles(): Promise<VehicleDto[]> {
+    return ApiService.get(VEHICLE_ENDPOINTS.GET_VEHICLE_all);
+  }
+
+  /* =========================================================
+     PRIVATE: FORM DATA BUILDER (RN + EXPO SAFE)
   ========================================================= */
   private buildFormData(data: any): FormData {
-    const formData = new FormData()
+    const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
-      if (value === undefined || value === null) return
+      if (value === undefined || value === null) return;
 
-      // 📁 Multiple files (images)
-      if (Array.isArray(value)) {
-        value.forEach((file) => {
-          if (!file?.uri) return
-          formData.append(key, {
-            uri: file.uri,
-            name: file.fileName || "image.jpg",
-            type: file.type || "image/jpeg",
-          } as any)
-        })
-        return
+      // 📍 LOCATION → JSON STRING
+      // 📍 LOCATION → SEND NESTED FIELDS (SPRING SAFE)
+      if (key === "location" && typeof value === "object") {
+        Object.entries(value).forEach(([locKey, locValue]) => {
+          if (locValue !== undefined && locValue !== null) {
+            formData.append(`location.${locKey}`, String(locValue));
+          }
+        });
+        return;
       }
 
-      // 📸 Single file (video)
+      // 📁 MULTIPLE FILES (IMAGES)
+      if (Array.isArray(value)) {
+        value.forEach((file, index) => {
+          if (!file?.uri) return;
+
+          formData.append(key, {
+            uri: file.uri,
+            name: file.fileName || `image_${index}.jpg`,
+            type: file.mimeType || "image/jpeg",
+          } as any);
+        });
+        return;
+      }
+
+      // 📸 SINGLE FILE (IMAGE / VIDEO)
       if (value?.uri) {
         formData.append(key, {
           uri: value.uri,
-          name: value.fileName || "video.mp4",
-          type: value.type || "video/mp4",
-        } as any)
-        return
+          name: value.fileName || "file",
+          type: value.mimeType || "application/octet-stream",
+        } as any);
+        return;
       }
 
-      // 🔤 Normal fields
-      formData.append(key, String(value))
-    })
+      // 🔤 PRIMITIVE VALUES
+      formData.append(key, String(value));
+    });
 
-    return formData
+    return formData;
   }
 }
 
-export default new VehicleService()
+export default new VehicleService();

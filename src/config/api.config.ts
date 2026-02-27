@@ -4,7 +4,9 @@
  */
 
 export const API_CONFIG = {
-  BASE_URL: "https://ashely-thermoscopical-nonfacetiously.ngrok-free.dev",
+  // BASE_URL: "https://leatrice-inapposite-foster.ngrok-free.dev",
+  // BASE_URL: "http://10.0.2.2:9000",
+  BASE_URL: "https://api.carigo.xyz/ms",
   TIMEOUT: 30000,
   ENDPOINTS: {
     AUTH: {
@@ -37,8 +39,7 @@ export const VEHICLE_ENDPOINTS = {
   UPDATE_VEHICLE: (vehicleId: string) => `/vehicles/${vehicleId}`,
   GET_VEHICLE: (id: string) => `/vehicles/${id}`,
   GET_BY_USER: (userId: string) => `/vehicles/by-number/${userId}`,
-  LIST_ALL: (page = 0, size = 20) =>
-    `/vehicles/all?page=${page}&size=${size}`,
+  LIST_ALL: (page = 0, size = 20) => `/vehicles/all?page=${page}&size=${size}`,
   DELETE_VEHICLE: (vehicleId: string) => `/vehicles/${vehicleId}`,
   VERIFY_VEHICLE: (id: string) => `/vehicles/${id}/verify`,
   CHECK_EXISTS: (vehicleNumber: string) =>
@@ -51,6 +52,7 @@ export const VEHICLE_ENDPOINTS = {
   ADD_MAINTENANCE: (id: string) => `/vehicles/${id}/maintenance`,
   CHECK_MAINTENANCE: (id: string, start: string, end: string) =>
     `/vehicles/${id}/maintenance/check?start=${start}&end=${end}`,
+  GET_VEHICLE_all: `/vehicles/all`,
 };
 
 /* ================= CAR OWNER ENDPOINTS ================= */
@@ -62,36 +64,28 @@ export const CAR_OWNER_ENDPOINTS = {
   // KYC Upload
   UPLOAD_AADHAAR_FRONT: (id: string) =>
     `/car-owners/${id}/upload/aadhaar-front`,
-  UPLOAD_AADHAAR_BACK: (id: string) =>
-    `/car-owners/${id}/upload/aadhaar-back`,
-  UPLOAD_SELFIE: (id: string) =>
-    `/car-owners/${id}/upload/selfie`,
-  UPLOAD_DL: (id: string) =>
-    `/car-owners/${id}/upload/driving-license`,
+  UPLOAD_AADHAAR_BACK: (id: string) => `/car-owners/${id}/upload/aadhaar-back`,
+  UPLOAD_SELFIE: (id: string) => `/car-owners/${id}/upload/selfie`,
+  UPLOAD_DL: (id: string) => `/car-owners/${id}/upload/driving-license`,
 
   // KYC Get URLs
-  GET_AADHAAR_FRONT: (id: string) =>
-    `/car-owners/${id}/aadhaar-front-url`,
-  GET_AADHAAR_BACK: (id: string) =>
-    `/car-owners/${id}/aadhaar-back-url`,
-  GET_SELFIE: (id: string) =>
-    `/car-owners/${id}/selfie-url`,
-  GET_DL: (id: string) =>
-    `/car-owners/${id}/driving-license-url`,
+  GET_AADHAAR_FRONT: (id: string) => `/car-owners/${id}/aadhaar-front-url`,
+  GET_AADHAAR_BACK: (id: string) => `/car-owners/${id}/aadhaar-back-url`,
+  GET_SELFIE: (id: string) => `/car-owners/${id}/selfie-url`,
+  GET_DL: (id: string) => `/car-owners/${id}/driving-license-url`,
 
   // Wallet
   ADD_WALLET: (id: string) => `/car-owners/${id}/wallet/add`,
   DEDUCT_WALLET: (id: string) => `/car-owners/${id}/wallet/deduct`,
   WITHDRAW_WALLET: (id: string) => `/car-owners/${id}/wallet/withdraw`,
-  GET_TRANSACTIONS: (id: string) =>
-    `/car-owners/${id}/wallet/transactions`,
+  GET_TRANSACTIONS: (id: string) => `/car-owners/${id}/wallet/transactions`,
 
   // Bank / Rating / Earnings
   UPDATE_BANK: (id: string) => `/car-owners/${id}/bank`,
   ADD_RATING: (id: string) => `/car-owners/${id}/rating`,
   GET_EARNINGS: (id: string) => `/car-owners/${id}/earnings`,
-}
-
+  GET_OWNER_DASHBORD: `/dashboard/owner`,
+};
 
 /* ================= RENTER ENDPOINTS ================= */
 
@@ -108,5 +102,5 @@ export const RENTER_ENDPOINTS = {
   // Booking
   BOOK_VEHICLE: "/renters/book",
   GET_BOOKINGS: (id: string) => `/renters/${id}/bookings`,
+  GET_RENTER_DASHBORD: `/dashboard/renter`,
 };
-

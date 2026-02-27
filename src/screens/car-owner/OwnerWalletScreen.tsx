@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
-import { useTheme } from "../../context/ThemeContext"
+import React, { useEffect, useState } from "react"
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { WalletActionModal } from "../../components/owner-profile"
+import { useTheme } from "../../context/ThemeContext"
 import { mockCarOwners } from "../../data/mockCarOwners"
 
 export const OwnerWalletScreen = ({ route }: any) => {

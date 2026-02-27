@@ -5,6 +5,7 @@ import type {
   BankDetailsResponse,
   CarOwner,
   CreateOwnerRequest,
+  DashboardData,
   EarningsSummary,
   RatingRequest,
   RatingResponse,
@@ -37,6 +38,12 @@ class CarOwnerService {
   getOwner(id: string) {
     return api.get<CarOwner>(
       CAR_OWNER_ENDPOINTS.GET_OWNER(id)
+    )
+  }
+
+  getDashboard() {
+    return api.get<DashboardData>(
+      CAR_OWNER_ENDPOINTS.GET_OWNER_DASHBORD
     )
   }
 

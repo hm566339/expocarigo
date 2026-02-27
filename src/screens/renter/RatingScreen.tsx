@@ -1,9 +1,8 @@
 "use client"
 
 // Rating Screen - Allow renters to rate car owners after a ride
-import type React from "react"
-import { useState } from "react"
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, ScrollView } from "react-native"
+import React, { useState } from "react"
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useAuth } from "../../context/AuthContext"
 import RenterService from "../../services/api/renter.service"
 import type { RenterRatingRequest } from "../../types/renter.types"

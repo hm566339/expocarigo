@@ -1,5 +1,5 @@
-import type React from "react"
-import { TouchableOpacity, Text, StyleSheet, Alert } from "react-native"
+import React from "react"
+import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 
 interface EmergencyButtonProps {
