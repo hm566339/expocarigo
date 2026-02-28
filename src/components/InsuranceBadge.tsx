@@ -1,8 +1,8 @@
 "use client"
 
-import React from "react"
+import type React from "react"
 
-import { StyleSheet, Text, View } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { useTheme } from "../context/ThemeContext"
 

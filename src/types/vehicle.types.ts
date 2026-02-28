@@ -1,137 +1,21 @@
-// /* ================= ENUMS ================= */
-
-// export type BillingMode = "PER_DAY" | "PER_HOUR" | "BOTH"
-
-// export type KycStatus = "PENDING" | "APPROVED" | "REJECTED"
-
-// /* ================= ADD VEHICLE REQUEST ================= */
-
-// export interface AddVehicleRequest {
-//   vehicleNumber: string
-//   vehicleType?: string
-//   manufacturer?: string
-//   model?: string
-//   manufactureYear?: number
-//   fuelType?: string
-//   color?: string
-//   ownerName?: string
-//   ownerAddress?: string
-
-//   preDay?: number
-
-//   chassisNumber: string
-//   engineNumber: string
-
-//   // multipart files
-//   rcFrontImage?: File
-//   rcBackImage?: File
-//   vehicleImages?: File[]
-//   vehicleVideo?: File
-
-//   ratePerDay?: number
-//   ratePerHour?: number
-//   billingMode?: BillingMode
-// }
-
-// /* ================= VEHICLE DTO ================= */
-
-// export interface VehicleDto {
-//   vehicleId: string
-//   userId: number
-
-//   vehicleNumber: string
-//   vehicleType?: string
-//   manufacturer?: string
-//   model?: string
-//   manufactureYear?: number
-
-//   fuelType?: string
-//   color?: string
-
-//   ownerName?: string
-//   ownerAddress?: string
-
-//   chassisNumber?: string
-//   engineNumber?: string
-
-//   rcFrontImageUrl?: string
-//   rcBackImageUrl?: string
-
-//   vehicleImageUrls?: string[]
-//   vehicleVideoUrl?: string | null
-
-//   kycStatus?: KycStatus
-
-//   ratePerDay?: number
-//   ratePerHour?: number
-//   billingMode?: BillingMode
-
-//   createdAt?: string
-//   updatedAt?: string
-// }
-
-// /* ================= AVAILABILITY ================= */
-
-// export interface AvailabilityRequest {
-//   vehicleId: string
-//   startTime: string
-//   endTime: string
-//   available: boolean
-// }
-
-// export interface AvailabilitySlotDto {
-//   id: number
-//   vehicleId: string
-//   startTime: string
-//   endTime: string
-//   available: boolean
-// }
-
-// /* ================= PRICE QUOTE ================= */
-
-// export interface PriceQuoteRequest {
-//   startTime: string
-//   endTime: string
-//   promoCode?: string
-// }
-
-// export interface PriceQuoteDto {
-//   baseAmount: number
-//   discount: number
-//   finalAmount: number
-//   currency: string
-//   promoCode?: string
-//   promoMessage?: string
-// }
-
-// /* ================= VERIFY ================= */
-
-// export interface UserAndVehicleVerifyRequest {
-//   ownerId: number
-//   vehicleId: string
-//   preDay: number
-// }
-
-
-
 /* ================= ENUMS ================= */
 
-export type BillingMode = "PER_DAY" | "PER_HOUR" | "BOTH"
+export type BillingMode = "PER_DAY" | "PER_HOUR" | "BOTH";
 
-export type KycStatus = "PENDING" | "VERIFIED" | "FAILED"
+export type KycStatus = "PENDING" | "VERIFIED" | "FAILED";
 
-export type VehicleStatus = "ACTIVE" | "BLOCKED" | "INACTIVE"
+export type VehicleStatus = "ACTIVE" | "BLOCKED" | "INACTIVE";
 
 /* ================= LOCATION ================= */
 
 export interface VehicleLocation {
-  latitude: number
-  longitude: number
-  address?: string
-  city?: string
-  state?: string
-  country?: string
-  postalCode?: string
+  latitude: number;
+  longitude: number;
+  address?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  postalCode?: string;
 }
 
 /* ================= FILE (EXPO IMAGE PICKER) ================= */
@@ -139,9 +23,9 @@ export interface VehicleLocation {
  * Expo ImagePicker returns this shape
  */
 export interface ExpoFile {
-  uri: string
-  name?: string
-  type?: string
+  uri: string;
+  name?: string;
+  type?: string;
 }
 
 /* ================= ADD VEHICLE REQUEST ================= */
@@ -151,21 +35,21 @@ export interface ExpoFile {
  * Sent as multipart/form-data
  */
 export interface AddVehicleRequest {
-  vehicleNumber: string
-  ownerName?: string
+  vehicleNumber: string;
+  ownerName?: string;
 
-  billingMode?: BillingMode
+  billingMode?: BillingMode;
 
-  ratePerDay?: number
-  ratePerHour?: number
+  ratePerDay?: number;
+  ratePerHour?: number;
 
-  location: VehicleLocation
+  location: VehicleLocation;
 
   // ===== MEDIA (MULTIPART) =====
-  rcFrontImage?: ExpoFile | null
-  rcBackImage?: ExpoFile | null
-  vehicleImages?: ExpoFile[]
-  vehicleVideo?: ExpoFile | null
+  rcFrontImage?: ExpoFile | null;
+  rcBackImage?: ExpoFile | null;
+  vehicleImages?: ExpoFile[];
+  vehicleVideo?: ExpoFile | null;
 }
 
 /* ================= VEHICLE DTO ================= */
@@ -173,71 +57,71 @@ export interface AddVehicleRequest {
  * Backend → Frontend response
  */
 export interface VehicleDto {
-  vehicleId: string
-  userId: number
+  vehicleId: string;
+  userId: number;
 
-  vehicleNumber: string
+  vehicleNumber: string;
 
-  ownerName?: string
+  ownerName?: string;
 
-  ratePerDay?: number
-  ratePerHour?: number
-  billingMode?: BillingMode
+  ratePerDay?: number;
+  ratePerHour?: number;
+  billingMode?: BillingMode;
 
   // ===== LOCATION =====
-  location?: VehicleLocation
+  location?: VehicleLocation;
 
   // ===== MEDIA URLS =====
-  rcFrontImageUrl?: string
-  rcBackImageUrl?: string
-  vehicleImageUrls?: string[]
-  vehicleVideoUrl?: string | null
+  rcFrontImageUrl?: string;
+  rcBackImageUrl?: string;
+  vehicleImageUrls?: string[];
+  vehicleVideoUrl?: string | null;
 
-  kycStatus?: KycStatus
-  status?: VehicleStatus
+  kycStatus?: KycStatus;
+  status?: VehicleStatus;
 
-  createdAt?: string
-  updatedAt?: string
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 /* ================= AVAILABILITY ================= */
 
 export interface AvailabilityRequest {
-  vehicleId: string
-  startTime: string
-  endTime: string
-  available: boolean
+  vehicleId: string;
+  startTime: string;
+  endTime: string;
+  available: boolean;
 }
 
 export interface AvailabilitySlotDto {
-  id: number
-  vehicleId: string
-  startTime: string
-  endTime: string
-  available: boolean
+  id: number;
+  vehicleId: string;
+  startTime: string;
+  endTime: string;
+  available: boolean;
 }
 
 /* ================= PRICE QUOTE ================= */
 
 export interface PriceQuoteRequest {
-  startTime: string
-  endTime: string
-  promoCode?: string
+  startTime: string;
+  endTime: string;
+  promoCode?: string;
 }
 
 export interface PriceQuoteDto {
-  baseAmount: number
-  discount: number
-  finalAmount: number
-  currency: string
-  promoCode?: string
-  promoMessage?: string
+  baseAmount: number;
+  discount: number;
+  finalAmount: number;
+  currency: string;
+  promoCode?: string;
+  promoMessage?: string;
 }
 
 /* ================= VERIFY USER & VEHICLE ================= */
 
 export interface UserAndVehicleVerifyRequest {
-  ownerId: number
-  vehicleId: string
-  preDay: number
+  ownerId: number;
+  vehicleId: string;
+  preDay: number;
 }

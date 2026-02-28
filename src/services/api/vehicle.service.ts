@@ -69,6 +69,13 @@ class VehicleService {
   }
 
   /* =========================================================
+     CHECK IF VEHICLE EXISTS
+  ========================================================= */
+  checkVehicleExists(vehicleNumber: string): Promise<boolean> {
+    return ApiService.get(VEHICLE_ENDPOINTS.CHECK_EXISTS(vehicleNumber));
+  }
+
+  /* =========================================================
      AVAILABILITY
   ========================================================= */
   getAvailability(
@@ -105,10 +112,44 @@ class VehicleService {
   }
 
   /* =========================================================
-     GET ALL VEHICLES
+     GET ALL VEHICLES (PAGINATED)
   ========================================================= */
-  getAllVehicles(): Promise<VehicleDto[]> {
-    return ApiService.get(VEHICLE_ENDPOINTS.GET_VEHICLE_all);
+  getAllVehicles(page = 0, size = 20): Promise<VehicleDto[]> {
+    return ApiService.get(VEHICLE_ENDPOINTS.LIST_ALL(page, size));
+  }
+
+  /* =========================================================
+     SEARCH VEHICLES BY CITY / KEYWORD
+  ========================================================= */
+  searchVehicles(keyword: string): Promise<VehicleDto[]> {
+    return ApiService.get(VEHICLE_ENDPOINTS.SEARCH(keyword));
+  }
+
+  /* =========================================================
+     MAINTENANCE MANAGEMENT
+  ========================================================= */
+  addMaintenance(vehicleId: string, payload: any): Promise<any> {
+    return ApiService.post(
+      VEHICLE_ENDPOINTS.ADD_MAINTENANCE(vehicleId),
+      payload,
+    );
+  }
+
+  checkMaintenance(
+    vehicleId: string,
+    start: string,
+    end: string,
+  ): Promise<boolean> {
+    return ApiService.get(
+      VEHICLE_ENDPOINTS.CHECK_MAINTENANCE(vehicleId, start, end),
+    );
+  }
+
+  /* =========================================================
+     VERIFY VEHICLE
+  ========================================================= */
+  verifyVehicle(vehicleId: string): Promise<boolean> {
+    return ApiService.get(VEHICLE_ENDPOINTS.VERIFY_VEHICLE(vehicleId));
   }
 
   /* =========================================================
@@ -120,7 +161,6 @@ class VehicleService {
     Object.entries(data).forEach(([key, value]) => {
       if (value === undefined || value === null) return;
 
-      // 📍 LOCATION → JSON STRING
       // 📍 LOCATION → SEND NESTED FIELDS (SPRING SAFE)
       if (key === "location" && typeof value === "object") {
         Object.entries(value).forEach(([locKey, locValue]) => {

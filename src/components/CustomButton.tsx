@@ -2,8 +2,8 @@
  * Reusable Button Component
  */
 
-import React from "react"
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, type TextStyle, type ViewStyle } from "react-native"
+import type React from "react"
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, type ViewStyle, type TextStyle } from "react-native"
 
 interface CustomButtonProps {
   title: string

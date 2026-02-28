@@ -1,5 +1,4 @@
-import React from "react"
-import { StyleSheet, Text, TextInput, View, type KeyboardTypeOptions } from "react-native"
+import { View, TextInput, Text, StyleSheet, type KeyboardTypeOptions } from "react-native"
 
 interface InputFieldProps {
   label: string

@@ -52,6 +52,8 @@ export const VEHICLE_ENDPOINTS = {
   ADD_MAINTENANCE: (id: string) => `/vehicles/${id}/maintenance`,
   CHECK_MAINTENANCE: (id: string, start: string, end: string) =>
     `/vehicles/${id}/maintenance/check?start=${start}&end=${end}`,
+  SEARCH: (keyword: string) =>
+    `/vehicles/search?keyword=${encodeURIComponent(keyword)}`,
   GET_VEHICLE_all: `/vehicles/all`,
 };
 

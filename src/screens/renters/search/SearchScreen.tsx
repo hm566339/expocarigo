@@ -1,5 +1,5 @@
 import * as Location from "expo-location";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Animated,
@@ -7,13 +7,13 @@ import {
   Modal,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-
-import React from "react";
 import { Button } from "../../../components/ui/Button";
+import { VehicleCard } from "../../../components/Vehicle.Card";
 import { useVehicleStore } from "../../../services/storage/store/vehicle.store";
 
 interface CalendarDate {
@@ -22,8 +22,13 @@ interface CalendarDate {
   inRange?: boolean;
 }
 
-export default function SearchScreen({ navigation }: any) {
-  const { vehicles, fetchVehicles, isLoading } = useVehicleStore();
+interface SearchScreenProps {
+  navigation: any;
+}
+
+export default function SearchScreen({ navigation }: SearchScreenProps) {
+  const { vehicles, fetchVehicles, isLoading, error, clearError } =
+    useVehicleStore();
 
   const [city, setCity] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -32,6 +37,7 @@ export default function SearchScreen({ navigation }: any) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [pickingStartDate, setPickingStartDate] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [showMap, setShowMap] = useState(true);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
@@ -56,21 +62,28 @@ export default function SearchScreen({ navigation }: any) {
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [fadeAnim, slideAnim, scaleAnim]);
 
   /* ---------- GET USER LOCATION ---------- */
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") return;
+      if (status !== "granted") {
+        console.warn("Location permission denied");
+        return;
+      }
 
-      const loc = await Location.getCurrentPositionAsync({});
-      setLocation(loc.coords);
+      try {
+        const loc = await Location.getCurrentPositionAsync({});
+        setLocation(loc.coords);
+      } catch (err) {
+        console.error("Error getting location:", err);
+      }
     })();
   }, []);
 
   /* ---------- DATE FORMATTING ---------- */
-  const formatDate = (date: Date) => {
+  const formatDate = (date: Date): string => {
     const d = new Date(date);
     const month = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
@@ -79,15 +92,15 @@ export default function SearchScreen({ navigation }: any) {
   };
 
   /* ---------- CALENDAR GENERATION ---------- */
-  const getDaysInMonth = (date: Date) => {
+  const getDaysInMonth = (date: Date): number => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   };
 
-  const getFirstDayOfMonth = (date: Date) => {
+  const getFirstDayOfMonth = (date: Date): number => {
     return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   };
 
-  const generateCalendarDays = () => {
+  const generateCalendarDays = (): CalendarDate[] => {
     const daysInMonth = getDaysInMonth(currentMonth);
     const firstDay = getFirstDayOfMonth(currentMonth);
     const days: CalendarDate[] = [];
@@ -107,7 +120,7 @@ export default function SearchScreen({ navigation }: any) {
   };
 
   /* ---------- DATE SELECTION ---------- */
-  const handleDateSelect = (dateStr: string) => {
+  const handleDateSelect = (dateStr: string): void => {
     if (!dateStr) return;
 
     const displayDate = formatDate(new Date(dateStr));
@@ -122,76 +135,56 @@ export default function SearchScreen({ navigation }: any) {
   };
 
   /* ---------- SEARCH ---------- */
-  const handleSearch = async () => {
-    if (!city || !startDate || !endDate) {
-      alert("Please fill in all fields");
+  const handleSearch = async (): Promise<void> => {
+    clearError();
+
+    if (!city.trim()) {
+      console.warn("Please enter a city");
       return;
     }
 
-    await fetchVehicles({ city, startDate, endDate });
+    console.log("[v0] Searching vehicles for city:", city);
+    await fetchVehicles({
+      city: city.trim(),
+      startDate,
+      endDate,
+    });
   };
 
   /* ---------- MONTH NAVIGATION ---------- */
-  const goToPreviousMonth = () => {
+  const goToPreviousMonth = (): void => {
     setCurrentMonth(
       new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1),
     );
   };
 
-  const goToNextMonth = () => {
+  const goToNextMonth = (): void => {
     setCurrentMonth(
       new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1),
     );
   };
 
-  /* ---------- VEHICLE CARD ---------- */
-  const renderVehicle = ({ item }: any) => (
-    <Animated.View
-      style={[
-        styles.cardContainer,
-        {
-          opacity: fadeAnim,
-          transform: [
-            {
-              translateY: slideAnim,
-            },
-          ],
-        },
-      ]}
-    >
-      <TouchableOpacity
-        style={styles.card}
-        onPress={() => {
-          Animated.sequence([
-            Animated.timing(scaleAnim, {
-              toValue: 0.98,
-              duration: 100,
-              useNativeDriver: true,
-            }),
-            Animated.timing(scaleAnim, {
-              toValue: 1,
-              duration: 100,
-              useNativeDriver: true,
-            }),
-          ]).start();
-          navigation.navigate("CarDetail", { vehicleId: item.id });
-        }}
-        activeOpacity={0.7}
-      >
-        <View style={styles.cardContent}>
-          <View style={styles.cardHeader}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.price}>₹{item.pricePerDay}/day</Text>
-          </View>
-          <Text style={styles.location}>{item.location?.city}</Text>
-          <View style={styles.cardFooter}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>Available</Text>
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-    </Animated.View>
+  /* ---------- VEHICLE CARD RENDER ---------- */
+  const renderVehicle = ({ item, index }: any) => (
+    <VehicleCard
+      item={item}
+      index={index}
+      onPress={() => {
+        Animated.sequence([
+          Animated.timing(scaleAnim, {
+            toValue: 0.95,
+            duration: 100,
+            useNativeDriver: true,
+          }),
+          Animated.timing(scaleAnim, {
+            toValue: 1,
+            duration: 100,
+            useNativeDriver: true,
+          }),
+        ]).start();
+        navigation.navigate("CarDetail", { vehicleId: item.vehicleId });
+      }}
+    />
   );
 
   const calendarDays = generateCalendarDays();
@@ -217,15 +210,29 @@ export default function SearchScreen({ navigation }: any) {
         ]}
       >
         <Text style={styles.sectionTitle}>Find Your Perfect Ride</Text>
+
+        {/* ERROR MESSAGE */}
+        {error && (
+          <View style={styles.errorBanner}>
+            <Text style={styles.errorText}>{error}</Text>
+            <TouchableOpacity onPress={clearError}>
+              <Text style={styles.errorClose}>✕</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         <View style={styles.filters}>
           {/* City Input */}
           <View style={styles.filterRow}>
-            <Text style={styles.filterLabel}>City</Text>
-            <TouchableOpacity style={styles.inputField}>
-              <Text style={[styles.inputText, !city && styles.placeholder]}>
-                {city || "Enter city"}
-              </Text>
-            </TouchableOpacity>
+            <Text style={styles.filterLabel}>City / Keyword</Text>
+            <TextInput
+              style={styles.inputField}
+              placeholder="Enter city or vehicle type"
+              placeholderTextColor="#94a3b8"
+              value={city}
+              onChangeText={setCity}
+              editable={!isLoading}
+            />
           </View>
 
           {/* Date Range Display */}
@@ -236,6 +243,7 @@ export default function SearchScreen({ navigation }: any) {
                 setPickingStartDate(true);
                 setShowDatePicker(true);
               }}
+              disabled={isLoading}
             >
               <Text style={styles.dateLabel}>Start Date</Text>
               <Text
@@ -258,6 +266,7 @@ export default function SearchScreen({ navigation }: any) {
                 setPickingStartDate(false);
                 setShowDatePicker(true);
               }}
+              disabled={isLoading}
             >
               <Text style={styles.dateLabel}>End Date</Text>
               <Text style={[styles.dateValue, !endDate && styles.placeholder]}>
@@ -270,7 +279,20 @@ export default function SearchScreen({ navigation }: any) {
             title={isLoading ? "Searching..." : "Search Vehicles"}
             onPress={handleSearch}
             loading={isLoading}
+            disabled={isLoading}
           />
+
+          {/* Toggle Map Button */}
+          {location && (
+            <TouchableOpacity
+              style={styles.mapToggleButton}
+              onPress={() => setShowMap(!showMap)}
+            >
+              <Text style={styles.mapToggleText}>
+                {showMap ? "🗺️ Hide Map" : "🗺️ Show Map"}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </Animated.View>
 
@@ -307,7 +329,7 @@ export default function SearchScreen({ navigation }: any) {
             <View style={styles.calendarGrid}>
               {calendarDays.map((dayObj, index) => (
                 <TouchableOpacity
-                  key={index}
+                  key={`day-${currentMonth.getFullYear()}-${currentMonth.getMonth()}-${index}`}
                   style={[
                     styles.dayCell,
                     !dayObj.date && styles.emptyCellDay,
@@ -337,7 +359,7 @@ export default function SearchScreen({ navigation }: any) {
       </Modal>
 
       {/* ---------- MAP ---------- */}
-      {location && (
+      {location && showMap && (
         <Animated.View
           style={[
             styles.mapContainer,
@@ -395,10 +417,11 @@ export default function SearchScreen({ navigation }: any) {
           <Text style={styles.loadingText}>Finding vehicles...</Text>
         </View>
       )}
+
       {/* ---------- VEHICLE LIST ---------- */}
       <FlatList
         data={vehicles}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => `vehicle-${item.vehicleId}-${index}`}
         renderItem={renderVehicle}
         contentContainerStyle={styles.listContent}
         scrollEnabled={!isLoading}
@@ -406,7 +429,9 @@ export default function SearchScreen({ navigation }: any) {
           !isLoading ? (
             <View style={styles.emptyState}>
               <Text style={styles.emptyText}>
-                Search for vehicles to get started
+                {city
+                  ? "No vehicles found"
+                  : "Search for vehicles to get started"}
               </Text>
             </View>
           ) : null
@@ -440,7 +465,31 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "700",
     color: "#1e293b",
-    marginBottom: 16,
+    marginBottom: 12,
+  },
+  errorBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#fee2e2",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: "#dc2626",
+  },
+  errorText: {
+    fontSize: 13,
+    color: "#991b1b",
+    fontWeight: "500",
+    flex: 1,
+  },
+  errorClose: {
+    fontSize: 16,
+    color: "#991b1b",
+    fontWeight: "700",
+    paddingLeft: 8,
   },
   filters: {
     gap: 12,
@@ -462,8 +511,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderWidth: 1,
     borderColor: "#e2e8f0",
-  },
-  inputText: {
     fontSize: 15,
     fontWeight: "500",
     color: "#1e293b",
@@ -510,6 +557,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#94a3b8",
+  },
+  mapToggleButton: {
+    backgroundColor: "#eff6ff",
+    borderRadius: 12,
+    paddingVertical: 10,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#bfdbfe",
+  },
+  mapToggleText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#2563eb",
   },
   calendarModalOverlay: {
     flex: 1,
@@ -604,60 +664,7 @@ const styles = StyleSheet.create({
   map: {
     height: 240,
   },
-  cardContainer: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-  },
-  card: {
-    backgroundColor: "#ffffff",
-    borderRadius: 16,
-    overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  cardContent: {
-    padding: 16,
-  },
-  cardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 8,
-  },
-  name: {
-    fontWeight: "700",
-    fontSize: 16,
-    color: "#1e293b",
-    flex: 1,
-  },
-  price: {
-    fontWeight: "600",
-    fontSize: 14,
-    color: "#2563eb",
-  },
-  location: {
-    fontSize: 13,
-    color: "#64748b",
-    marginBottom: 12,
-  },
-  cardFooter: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  badge: {
-    backgroundColor: "#dbeafe",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 20,
-  },
-  badgeText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#2563eb",
-  },
+
   listContent: {
     paddingBottom: 24,
   },
@@ -686,6 +693,3 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
-function getAllVehicles() {
-  throw new Error("Function not implemented.");
-}
