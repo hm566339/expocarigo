@@ -67,3 +67,36 @@ export interface RenterRatingResponse {
   averageRating: number
   totalRatings: number
 }
+
+
+export interface DashboardData {
+  renter: {
+    id: number
+    name: string
+    kycStatus: "PENDING" | "COMPLETED" | "REJECTED"
+    rating: number
+  }
+  spending: {
+    thisMonth: number
+    lifetime: number
+  }
+  bookingStats: {
+    total: number
+    today: number
+    ongoing: number
+    upcoming: number
+    completed: number
+    cancelled: number
+    disputed: number
+  }
+  currentTrip: string | null
+  alerts: {
+    pendingKyc: number
+    activeTrips: number
+    paymentIssues: number
+    disputes: number
+  }
+  meta: {
+    totalBookings: number
+  }
+}

@@ -1,5 +1,5 @@
-import type React from "react"
-import { View, Text, StyleSheet } from "react-native"
+import React from "react"
+import { StyleSheet, Text, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 
 interface GPSActiveIndicatorProps {
@@ -12,15 +12,15 @@ export const GPSActiveIndicator: React.FC<GPSActiveIndicatorProps> = ({ isActive
 
   const config = isActive
     ? {
-        color: "#10B981",
-        icon: "map-marker-check",
-        label: "GPS Active",
-      }
+      color: "#10B981",
+      icon: "map-marker-check",
+      label: "GPS Active",
+    }
     : {
-        color: "#9CA3AF",
-        icon: "map-marker-off",
-        label: "GPS Off",
-      }
+      color: "#9CA3AF",
+      icon: "map-marker-off",
+      label: "GPS Off",
+    }
 
   return (
     <View style={[styles.indicator, { backgroundColor: config.color + "15", borderColor: config.color }]}>

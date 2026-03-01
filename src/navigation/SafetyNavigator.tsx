@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack"
-import type React from "react"
+import React from "react"
 import EmergencySOSScreen from "../screens/safety/EmergencySOSScreen"
 import LiveTrackingScreen from "../screens/safety/LiveTrackingScreen"
 import PreTripPhotosScreen from "../screens/safety/PreTripPhotosScreen"

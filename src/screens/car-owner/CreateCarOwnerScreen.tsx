@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native"
-import { useTheme } from "../../context/ThemeContext"
+import React, { useState } from "react"
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { InputField } from "../../components/owner-profile"
+import { useTheme } from "../../context/ThemeContext"
 
 export const CreateCarOwnerScreen = ({ navigation }: any) => {
   const { colors } = useTheme()

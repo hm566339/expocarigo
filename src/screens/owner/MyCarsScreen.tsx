@@ -24,7 +24,7 @@ export default function MyCarsScreen({ navigation }: any) {
   const [cars, setCars] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
-  /* 🔥 REFRESH ON SCREEN FOCUS */
+  /* 🔄 REFRESH ON SCREEN FOCUS */
   useFocusEffect(
     useCallback(() => {
       if (!ownerId) return
@@ -37,7 +37,6 @@ export default function MyCarsScreen({ navigation }: any) {
           const data = await VehicleService.getVehiclesByUser(
             ownerId.toString()
           )
-
           if (isActive) {
             setCars(Array.isArray(data) ? data : [])
           }
@@ -77,7 +76,7 @@ export default function MyCarsScreen({ navigation }: any) {
         ]}
       >
         <Text style={[styles.headerTitle, { color: colors.text }]}>
-          My Cars
+          My Vehicle
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate("AddCar")}>
           <Icon name="plus-circle" size={28} color={colors.primary} />
@@ -85,20 +84,45 @@ export default function MyCarsScreen({ navigation }: any) {
       </View>
 
       {/* CONTENT */}
-      <ScrollView
-        style={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {cars.length === 0 ? (
-          <Text style={{ color: colors.textSecondary }}>
-            No cars found
-          </Text>
+          /* ✅ EMPTY STATE */
+          <View style={styles.emptyState}>
+            <Icon
+              name="car-outline"
+              size={72}
+              color={colors.textSecondary}
+            />
+            <Text style={[styles.emptyTitle, { color: colors.text }]}>
+              No vehicles added yet
+            </Text>
+            <Text
+              style={[
+                styles.emptySubtitle,
+                { color: colors.textSecondary },
+              ]}
+            >
+              Start earning by adding your first vehicle.
+            </Text>
+
+            <TouchableOpacity
+              style={[
+                styles.emptyButton,
+                { backgroundColor: colors.primary },
+              ]}
+              onPress={() => navigation.navigate("AddCar")}
+            >
+              <Icon name="plus" size={18} color="#fff" />
+              <Text style={styles.emptyButtonText}>
+                Add Vehicle
+              </Text>
+            </TouchableOpacity>
+          </View>
         ) : (
           cars.map((car, index) => {
             const vehicleId =
               car?.id || car?._id || car?.vehicleId || index
 
-            /* 🖼 IMAGE URLs */
             const imageUrls =
               Array.isArray(car.vehicleImageUrls) &&
                 car.vehicleImageUrls.length > 0
@@ -108,9 +132,9 @@ export default function MyCarsScreen({ navigation }: any) {
                     : img?.url || img?.secure_url || img?.path
                 )
                 : ["https://via.placeholder.com/400"]
-            /* 🎥 VIDEO URL (OPTIONAL) */
+
             const videoUrl = car.vehicleVideoUrl ?? undefined
-            // console.log("VIDEO URL PASSED 👉", videoUrl)
+
             return (
               <View
                 key={vehicleId.toString()}
@@ -119,12 +143,8 @@ export default function MyCarsScreen({ navigation }: any) {
                   { backgroundColor: colors.surface },
                 ]}
               >
-                {/* IMAGE + VIDEO SLIDER */}
-                <ImageSlider
-                  images={imageUrls}
-                  videoUrl={videoUrl}
-                />
-                {/* CARD CONTENT */}
+                <ImageSlider images={imageUrls} videoUrl={videoUrl} />
+
                 <View style={styles.carContent}>
                   <View style={styles.carHeader}>
                     <View style={{ flex: 1 }}>
@@ -164,7 +184,9 @@ export default function MyCarsScreen({ navigation }: any) {
                           { color: colors.success },
                         ]}
                       >
-                        {car.isAvailable ? "Available" : "Unavailable"}
+                        {car.isAvailable
+                          ? "Available"
+                          : "Unavailable"}
                       </Text>
                     </View>
                   </View>
@@ -187,7 +209,6 @@ export default function MyCarsScreen({ navigation }: any) {
                     </View>
                   </View>
 
-                  {/* ACTION BUTTONS */}
                   <View style={styles.carActions}>
                     <TouchableOpacity
                       style={[
@@ -201,7 +222,9 @@ export default function MyCarsScreen({ navigation }: any) {
                       }
                     >
                       <Icon name="pencil" size={18} color="#fff" />
-                      <Text style={styles.editActionText}>Edit</Text>
+                      <Text style={styles.editActionText}>
+                        Edit
+                      </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -244,11 +267,7 @@ export default function MyCarsScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  center: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  center: { flex: 1, justifyContent: "center", alignItems: "center" },
 
   header: {
     flexDirection: "row",
@@ -263,14 +282,45 @@ const styles = StyleSheet.create({
 
   content: { flex: 1, paddingHorizontal: 24, paddingTop: 24 },
 
+  /* EMPTY STATE */
+  emptyState: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 80,
+    paddingHorizontal: 24,
+  },
+  emptyTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginTop: 16,
+  },
+  emptySubtitle: {
+    fontSize: 14,
+    textAlign: "center",
+    marginTop: 6,
+    marginBottom: 20,
+  },
+  emptyButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 22,
+    paddingVertical: 12,
+    borderRadius: 10,
+  },
+  emptyButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+
+  /* CAR CARD */
   carCard: {
     borderRadius: 16,
     marginBottom: 16,
     overflow: "hidden",
   },
-
   carContent: { padding: 16 },
-
   carHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -295,7 +345,6 @@ const styles = StyleSheet.create({
   statText: { fontSize: 13, fontWeight: "500" },
 
   carActions: { flexDirection: "row", gap: 8 },
-
   actionButton: {
     flex: 1,
     flexDirection: "row",

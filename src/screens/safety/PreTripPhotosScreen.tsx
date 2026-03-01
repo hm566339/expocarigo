@@ -1,9 +1,8 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, Alert, Dimensions } from "react-native"
-import { useRoute, useNavigation } from "@react-navigation/native"
+import { useNavigation, useRoute } from "@react-navigation/native"
+import React, { useState } from "react"
+import { Alert, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import type { PreTripPhoto } from "../../types/safety.types"
 
 const { width } = Dimensions.get("window")

@@ -1,5 +1,6 @@
 "use client"
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from "react-native"
+import React from "react"
+import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { useTheme } from "../../context/ThemeContext"
 
