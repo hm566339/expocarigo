@@ -1,12 +1,12 @@
 import React from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { VehicleCard } from "../vehicle-card/VEhicleCard";
+import { VehicleCard } from "../vehicle-card/VehicleCard";
 
 export interface VehicleListProps {
   vehicles: any[];
