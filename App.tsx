@@ -2,9 +2,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar, useColorScheme } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import React from "react";
 import { AuthProvider } from "./src/context/AuthContext";
 import { ThemeProvider } from "./src/context/ThemeContext";
-import { RootNavigator } from "./src/navigation/RootNavigator";
+import { RootNavigator } from "./src/navigation/root/RootNavigator";
 
 export default function App() {
   const isDarkMode = useColorScheme() === "dark";
