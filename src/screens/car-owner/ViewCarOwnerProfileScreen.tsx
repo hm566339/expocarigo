@@ -1,54 +1,54 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native"
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
-import { ProfileInfoCard, StatusBadge } from "../../components/owner-profile"
-import { useAuth } from "../../context/AuthContext"
-import { useTheme } from "../../context/ThemeContext"
-import CarOwnerService from "../../services/api/car-owner.service"
-import type { CarOwner } from "../../types/owner.types"
+import { ProfileInfoCard, StatusBadge } from "../../components/owner-profile";
+import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
+import CarOwnerService from "../../services/api/car-owner.service";
+import type { CarOwner } from "../../types/owner.types";
 
 export const ViewCarOwnerProfileScreen = ({ navigation }: any) => {
-  const { colors } = useTheme()
-  const { user } = useAuth()
+  const { colors } = useTheme();
+  const { user } = useAuth();
 
-  const [owner, setOwner] = useState<CarOwner | null>(null)
-  const ownerId = user?.id
+  const [owner, setOwner] = useState<CarOwner | null>(null);
+  const ownerId = user?.id;
 
   useEffect(() => {
-    if (!ownerId) return
+    if (!ownerId) return;
 
-    CarOwnerService
-      .getOwner(ownerId.toString())
+    CarOwnerService.getOwner(ownerId.toString())
       .then(setOwner)
-      .catch(err => {
-        console.log("Failed to fetch owner:", err)
-      })
-  }, [ownerId])
+      .catch((err) => {
+        console.log("Failed to fetch owner:", err);
+      });
+  }, [ownerId]);
 
   if (!owner) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <Text style={{ color: colors.text }}>Loading...</Text>
       </View>
-    )
+    );
   }
 
-  const isKycVerified = owner.kycStatus === "VERIFIED"
+  const isKycVerified = owner.kycStatus === "VERIFIED";
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         {/* ================= HEADER ================= */}
         <View style={[styles.headerCard, { backgroundColor: colors.surface }]}>
-
           <View style={styles.avatarPlaceholder}>
             {owner.selfieUrl ? (
               <Image
@@ -82,9 +82,7 @@ export const ViewCarOwnerProfileScreen = ({ navigation }: any) => {
                 { backgroundColor: colors.success + "20" },
               ]}
             >
-              <Text
-                style={[styles.ratingText, { color: colors.success }]}
-              >
+              <Text style={[styles.ratingText, { color: colors.success }]}>
                 ★ {owner.rating.toFixed(1)}
               </Text>
             </View>
@@ -122,10 +120,7 @@ export const ViewCarOwnerProfileScreen = ({ navigation }: any) => {
           </Text>
 
           <View
-            style={[
-              styles.walletCard,
-              { backgroundColor: colors.primary },
-            ]}
+            style={[styles.walletCard, { backgroundColor: colors.primary }]}
           >
             <Text style={styles.walletLabel}>Current Balance</Text>
             <Text style={styles.walletBalance}>
@@ -146,12 +141,7 @@ export const ViewCarOwnerProfileScreen = ({ navigation }: any) => {
             ]}
             onPress={() => navigation.navigate("UpdateCarOwnerProfile")}
           >
-            <Text
-              style={[
-                styles.actionButtonText,
-                { color: colors.primary },
-              ]}
-            >
+            <Text style={[styles.actionButtonText, { color: colors.primary }]}>
               Edit Profile
             </Text>
           </TouchableOpacity>
@@ -166,21 +156,15 @@ export const ViewCarOwnerProfileScreen = ({ navigation }: any) => {
             ]}
             onPress={() => navigation.navigate("KYCUpload")}
           >
-            <Text
-              style={[
-                styles.actionButtonText,
-                { color: colors.primary },
-              ]}
-            >
+            <Text style={[styles.actionButtonText, { color: colors.primary }]}>
               KYC Upload
             </Text>
           </TouchableOpacity>
         </View>
-
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
 /* ================= STYLES ================= */
 
@@ -290,4 +274,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
   },
-})
+});

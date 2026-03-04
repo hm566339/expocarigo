@@ -1,40 +1,47 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import { InputField } from "../../components/owner-profile"
-import { useTheme } from "../../context/ThemeContext"
+import React, { useState } from "react";
+import {
+    ActivityIndicator,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import { InputField } from "../../components/owner-profile";
+import { useTheme } from "../../context/ThemeContext";
 
 export const CreateCarOwnerScreen = ({ navigation }: any) => {
-  const { colors } = useTheme()
+  const { colors } = useTheme();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-  })
-  const [errors, setErrors] = useState<{ name?: string; email?: string }>({})
-  const [loading, setLoading] = useState(false)
+  });
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
+  const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
-    const newErrors: { name?: string; email?: string } = {}
+    const newErrors: { name?: string; email?: string } = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required"
+      newErrors.name = "Name is required";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email format"
+      newErrors.email = "Invalid email format";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async () => {
-    if (!validateForm()) return
+    if (!validateForm()) return;
 
-    setLoading(true)
+    setLoading(true);
 
     // Mock API call: POST /car-owners
     setTimeout(() => {
@@ -42,17 +49,25 @@ export const CreateCarOwnerScreen = ({ navigation }: any) => {
         "CO" +
         Math.floor(Math.random() * 1000)
           .toString()
-          .padStart(3, "0")
-      setLoading(false)
-      navigation.replace("ViewCarOwnerProfile", { ownerId: newOwnerId, ownerData: formData })
-    }, 1500)
-  }
+          .padStart(3, "0");
+      setLoading(false);
+      navigation.replace("ViewCarOwnerProfile", {
+        ownerId: newOwnerId,
+        ownerData: formData,
+      });
+    }, 1500);
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
-          <Text style={[styles.title, { color: colors.text }]}>Create Car Owner Profile</Text>
+          <Text style={[styles.title, { color: colors.text }]}>
+            Create Car Owner Profile
+          </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
             Enter your basic details to get started
           </Text>
@@ -94,8 +109,8 @@ export const CreateCarOwnerScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -134,4 +149,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
-})
+});

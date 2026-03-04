@@ -1,52 +1,73 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState } from "react"
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import { InputField } from "../../components/owner-profile"
-import { useTheme } from "../../context/ThemeContext"
-import { mockCarOwners } from "../../data/mockCarOwners"
+import React, { useEffect, useState } from "react";
+import {
+    ActivityIndicator,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import { InputField } from "../../components/owner-profile";
+import { useTheme } from "../../context/ThemeContext";
+import { mockCarOwners } from "../../data/mockCarOwners";
 
 export const BankDetailsScreen = ({ route }: any) => {
-  const { colors } = useTheme()
-  const { ownerId } = route.params
-  const [loading, setLoading] = useState(false)
+  const { colors } = useTheme();
+  const { ownerId } = route.params;
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     accountHolderName: "",
     accountNumber: "",
     ifscCode: "",
-  })
+  });
 
   useEffect(() => {
     // Mock API call to get existing bank details
-    const owner = mockCarOwners.find((o) => o.id === ownerId) || mockCarOwners[0]
+    const owner =
+      mockCarOwners.find((o) => o.id === ownerId) || mockCarOwners[0];
     if (owner.bankDetails) {
-      setFormData(owner.bankDetails)
+      setFormData(owner.bankDetails);
     }
-  }, [ownerId])
+  }, [ownerId]);
 
   const handleSave = async () => {
-    setLoading(true)
+    setLoading(true);
 
     // Mock API call: POST /car-owners/{ownerId}/bank
     setTimeout(() => {
-      setLoading(false)
+      setLoading(false);
       // Show success message
-    }, 1500)
-  }
+    }, 1500);
+  };
 
-  const isFormValid = formData.accountHolderName.trim() && formData.accountNumber.trim() && formData.ifscCode.trim()
+  const isFormValid =
+    formData.accountHolderName.trim() &&
+    formData.accountNumber.trim() &&
+    formData.ifscCode.trim();
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
-          <Text style={[styles.title, { color: colors.text }]}>Bank Account Details</Text>
-          <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Add your bank details for withdrawals</Text>
+          <Text style={[styles.title, { color: colors.text }]}>
+            Bank Account Details
+          </Text>
+          <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+            Add your bank details for withdrawals
+          </Text>
         </View>
 
-        <View style={[styles.infoCard, { backgroundColor: colors.surfaceVariant }]}>
+        <View
+          style={[styles.infoCard, { backgroundColor: colors.surfaceVariant }]}
+        >
           <Text style={[styles.infoText, { color: colors.textSecondary }]}>
-            Your bank account will be used for wallet withdrawals. Ensure all details are accurate.
+            Your bank account will be used for wallet withdrawals. Ensure all
+            details are accurate.
           </Text>
         </View>
 
@@ -54,7 +75,9 @@ export const BankDetailsScreen = ({ route }: any) => {
           <InputField
             label="Account Holder Name"
             value={formData.accountHolderName}
-            onChangeText={(text) => setFormData({ ...formData, accountHolderName: text })}
+            onChangeText={(text) =>
+              setFormData({ ...formData, accountHolderName: text })
+            }
             placeholder="Enter account holder name"
             required
           />
@@ -62,7 +85,9 @@ export const BankDetailsScreen = ({ route }: any) => {
           <InputField
             label="Account Number"
             value={formData.accountNumber}
-            onChangeText={(text) => setFormData({ ...formData, accountNumber: text })}
+            onChangeText={(text) =>
+              setFormData({ ...formData, accountNumber: text })
+            }
             placeholder="Enter account number"
             keyboardType="numeric"
             required
@@ -71,35 +96,48 @@ export const BankDetailsScreen = ({ route }: any) => {
           <InputField
             label="IFSC Code"
             value={formData.ifscCode}
-            onChangeText={(text) => setFormData({ ...formData, ifscCode: text.toUpperCase() })}
+            onChangeText={(text) =>
+              setFormData({ ...formData, ifscCode: text.toUpperCase() })
+            }
             placeholder="Enter IFSC code"
             required
           />
         </View>
 
-        <View style={[styles.securityNote, { backgroundColor: colors.success + "10" }]}>
+        <View
+          style={[
+            styles.securityNote,
+            { backgroundColor: colors.success + "10" },
+          ]}
+        >
           <Text style={[styles.securityText, { color: colors.success }]}>
-            Your bank details are encrypted and secure. We never share your information.
+            Your bank details are encrypted and secure. We never share your
+            information.
           </Text>
         </View>
       </ScrollView>
 
       <View style={[styles.footer, { borderTopColor: colors.border }]}>
         <TouchableOpacity
-          style={[styles.saveButton, { backgroundColor: colors.primary, opacity: isFormValid ? 1 : 0.5 }]}
+          style={[
+            styles.saveButton,
+            { backgroundColor: colors.primary, opacity: isFormValid ? 1 : 0.5 },
+          ]}
           onPress={handleSave}
           disabled={!isFormValid || loading}
         >
           {loading ? (
             <ActivityIndicator color="#fff" size="small" />
           ) : (
-            <Text style={styles.saveButtonText}>{formData.accountNumber ? "Update" : "Save"} Bank Details</Text>
+            <Text style={styles.saveButtonText}>
+              {formData.accountNumber ? "Update" : "Save"} Bank Details
+            </Text>
           )}
         </TouchableOpacity>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -156,4 +194,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
-})
+});

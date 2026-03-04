@@ -39,7 +39,7 @@ export default function SearchScreen({ navigation }: SearchScreenProps) {
     const vehicleId = vehicle.vehicleId || vehicle.id || vehicle._id;
 
     triggerCardPressAnimation(() => {
-      navigation.navigate("VehicleDetail", {
+      navigation.navigate("CarDetail", {
         vehicleId,
       });
     });
