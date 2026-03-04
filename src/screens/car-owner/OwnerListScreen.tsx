@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from "react-native"
+import React, { useEffect, useState } from "react"
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useTheme } from "../../context/ThemeContext"
 import { mockCarOwners } from "../../data/mockCarOwners"
 import type { CarOwner } from "../../types/carOwner"

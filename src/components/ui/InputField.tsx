@@ -1,14 +1,21 @@
-import { View, TextInput, Text, StyleSheet, type KeyboardTypeOptions } from "react-native"
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  type KeyboardTypeOptions,
+} from "react-native";
 
 interface InputFieldProps {
-  label: string
-  placeholder: string
-  value: string
-  onChangeText: (text: string) => void
-  secureTextEntry?: boolean
-  keyboardType?: KeyboardTypeOptions
-  error?: string
-  editable?: boolean
+  label: string;
+  placeholder: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  secureTextEntry?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  error?: string;
+  editable?: boolean;
 }
 
 export default function InputField({
@@ -36,7 +43,7 @@ export default function InputField({
       />
       {error && <Text style={styles.error}>{error}</Text>}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -66,4 +73,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
   },
-})
+});

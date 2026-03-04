@@ -1,7 +1,7 @@
 "use client"
 
 import * as ImagePicker from "expo-image-picker"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { Button } from "../../../components/ui/Button"
 import ErrorBanner from "../../../components/ui/ErrorBanner"

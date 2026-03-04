@@ -1,18 +1,17 @@
 "use client"
 
 // Renter Profile Screen - View and edit renter profile
-import type React from "react"
-import { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import {
-  View,
+  ActivityIndicator,
+  Alert,
+  Image,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  Alert,
-  ActivityIndicator,
-  ScrollView,
-  Image,
+  View,
 } from "react-native"
 import { useAuth } from "../../context/AuthContext"
 import RenterService from "../../services/api/renter.service"

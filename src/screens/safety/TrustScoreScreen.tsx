@@ -1,9 +1,8 @@
 "use client"
 
-import type React from "react"
-import { useState, useEffect } from "react"
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from "react-native"
 import { useRoute } from "@react-navigation/native"
+import React, { useEffect, useState } from "react"
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native"
 import type { TrustScore } from "../../types/safety.types"
 
 const TrustScoreScreen: React.FC = () => {

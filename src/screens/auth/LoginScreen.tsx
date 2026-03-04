@@ -5,13 +5,12 @@
  * Handles user authentication
  */
 
-import type React from "react"
-import { useState } from "react"
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity, Alert } from "react-native"
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { useAuth } from "../../context/AuthContext"
-import { CustomInput } from "../../components/CustomInput"
+import React, { useState } from "react"
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { CustomButton } from "../../components/CustomButton"
+import { CustomInput } from "../../components/CustomInput"
+import { useAuth } from "../../context/AuthContext"
 import { validators } from "../../utils/validation"
 
 type AuthStackParamList = {
