@@ -41,6 +41,8 @@ export default function SearchScreen({ navigation }: SearchScreenProps) {
     triggerCardPressAnimation(() => {
       navigation.navigate("CarDetail", {
         vehicleId,
+        startDate,
+        endDate,
       });
     });
   };

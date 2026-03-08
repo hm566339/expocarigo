@@ -106,3 +106,16 @@ export const RENTER_ENDPOINTS = {
   GET_BOOKINGS: (id: string) => `/renters/${id}/bookings`,
   GET_RENTER_DASHBORD: `/dashboard/renter`,
 };
+
+export const BOOKING_ENDPOINTS = {
+  CREATE_BOOKING: "/bookings",
+  GET_BOOKING: (id: string) => `/bookings/${id}`,
+  LIST_BOOKINGS: "/bookings",
+  APPROVE_BOOKING: (id: string) => `/bookings/${id}/approve`,
+  REJECT_BOOKING: (id: string) => `/bookings/${id}/reject`,
+  CANCEL_BOOKING: (id: string) => `/bookings/${id}/cancel`,
+  START_TRIP: (id: string) => `/bookings/${id}/start-trip`,
+  END_TRIP: (id: string) => `/bookings/${id}/end-trip`,
+  EXTEND_TRIP: (id: string) => `/bookings/${id}/extend-trip`,
+  PAYMENT_SUCCESS: (id: string) => `/bookings/${id}/payment-success`,
+};

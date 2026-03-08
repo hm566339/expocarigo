@@ -1,9 +1,21 @@
-// src/navigation/renter/renter.types.ts
-
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-/* ---------------- Renter Tabs ---------------- */
+/* ============================================================
+   SHARED TYPES
+============================================================ */
+
+export interface BookingQuote {
+  subtotal: number;
+  tax: number;
+  discount?: number;
+  total: number;
+  currency: string;
+}
+
+/* ============================================================
+   RENTER TAB NAVIGATION
+============================================================ */
 
 export type RenterTabParamList = {
   Home: undefined;
@@ -12,24 +24,49 @@ export type RenterTabParamList = {
   Profile: undefined;
 };
 
-/* ---------------- Renter Main Stack ---------------- */
+/* ============================================================
+   RENTER STACK NAVIGATION
+============================================================ */
 
 export type RenterStackParamList = {
   RenterTabs: undefined;
-  CarDetail: { vehicleId: string };
+
+  CarDetail: {
+    vehicleId: string;
+  };
+
   BookingSummary: {
     vehicleId: string;
     startDate: string;
     endDate: string;
+    quote: BookingQuote;
   };
-  PaymentScreen: { bookingId: string; totalAmount: number };
-  ActiveTrip: { bookingId: string };
-  TripEnd: { bookingId: string };
-  ExtendTrip: { bookingId: string };
-  RateOwner: { bookingId: string };
+
+  PaymentScreen: {
+    bookingId: string;
+    totalAmount: number;
+  };
+
+  ActiveTrip: {
+    bookingId: string;
+  };
+
+  TripEnd: {
+    bookingId: string;
+  };
+
+  ExtendTrip: {
+    bookingId: string;
+  };
+
+  RateOwner: {
+    bookingId: string;
+  };
 };
 
-/* ---------------- Renter Profile Stack ---------------- */
+/* ============================================================
+   PROFILE STACK
+============================================================ */
 
 export type RenterProfileStackParamList = {
   RenterProfile: undefined;
@@ -38,7 +75,9 @@ export type RenterProfileStackParamList = {
   Rating: undefined;
 };
 
-/* ---------------- Screen Props Helpers ---------------- */
+/* ============================================================
+   SCREEN PROP HELPERS
+============================================================ */
 
 export type RenterTabScreenProps<T extends keyof RenterTabParamList> =
   BottomTabScreenProps<RenterTabParamList, T>;

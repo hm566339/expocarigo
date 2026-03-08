@@ -57,6 +57,7 @@ export interface AddVehicleRequest {
  * Backend → Frontend response
  */
 export interface VehicleDto {
+  ownerId: any;
   vehicleId: string;
   userId: number;
 

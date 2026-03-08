@@ -1,119 +1,123 @@
-// Booking & Trip API service
-import ApiService from "./api.service"
-import { BOOKING_ENDPOINTS } from "../config/api.config"
+import {
+  OWNER_BOOKING_ENDPOINTS,
+  RENTER_BOOKING_ENDPOINTS,
+} from "../../config/api.config";
+
 import type {
   Booking,
-  CreateBookingRequest,
-  ApproveBookingRequest,
-  RejectBookingRequest,
-  PaymentSuccessRequest,
-  StartTripRequest,
-  EndTripRequest,
-  ExtendTripRequest,
   CancelBookingRequest,
-  BookingListResponse,
-} from "../types/booking.types"
+  CreateBookingRequest,
+  RejectBookingRequest,
+} from "../../types/booking.types";
+
+import ApiService from "../api.service";
 
 class BookingService {
-  // Create a new booking
+  // ================= RENTER ACTIONS =================
+
   async createBooking(data: CreateBookingRequest): Promise<Booking> {
-    return ApiService.post<Booking>(BOOKING_ENDPOINTS.CREATE_BOOKING, data)
+    return ApiService.post(RENTER_BOOKING_ENDPOINTS.CREATE_BOOKING, data);
   }
 
-  // Get single booking by ID
-  async getBooking(id: string): Promise<Booking> {
-    return ApiService.get<Booking>(BOOKING_ENDPOINTS.GET_BOOKING(id))
+  async confirmPayment(id: string): Promise<Booking> {
+    return ApiService.put(RENTER_BOOKING_ENDPOINTS.PAYMENT_SUCCESS(id), {});
   }
 
-  // List all bookings (with optional filters)
-  async listBookings(filters?: {
-    renterId?: string
-    ownerId?: string
-    vehicleId?: string
-    status?: string
-  }): Promise<BookingListResponse> {
-    const queryParams = new URLSearchParams()
-    if (filters?.renterId) queryParams.append("renterId", filters.renterId)
-    if (filters?.ownerId) queryParams.append("ownerId", filters.ownerId)
-    if (filters?.vehicleId) queryParams.append("vehicleId", filters.vehicleId)
-    if (filters?.status) queryParams.append("status", filters.status)
-
-    const url = `${BOOKING_ENDPOINTS.LIST_BOOKINGS}${queryParams.toString() ? `?${queryParams.toString()}` : ""}`
-    return ApiService.get<BookingListResponse>(url)
+  async cancelBooking(
+    id: string,
+    data?: CancelBookingRequest,
+  ): Promise<Booking> {
+    return ApiService.put(
+      RENTER_BOOKING_ENDPOINTS.CANCEL_BOOKING(id),
+      data || {},
+    );
   }
 
-  // Owner approves booking
-  async approveBooking(id: string, data?: ApproveBookingRequest): Promise<Booking> {
-    return ApiService.put<Booking>(BOOKING_ENDPOINTS.APPROVE_BOOKING(id), data || {})
+  async submitReview(id: string, data: any): Promise<void> {
+    return ApiService.post(RENTER_BOOKING_ENDPOINTS.SUBMIT_REVIEW(id), data);
   }
 
-  // Owner rejects booking
-  async rejectBooking(id: string, data: RejectBookingRequest): Promise<Booking> {
-    return ApiService.put<Booking>(BOOKING_ENDPOINTS.REJECT_BOOKING(id), data)
+  // ================= RENTER DASHBOARD =================
+
+  async countTotalBookings(renterId: string): Promise<number> {
+    return ApiService.get(
+      `${RENTER_BOOKING_ENDPOINTS.COUNT_TOTAL_BOOKINGS}?renterId=${renterId}`,
+    );
   }
 
-  // Confirm payment success
-  async confirmPayment(id: string, data: PaymentSuccessRequest): Promise<Booking> {
-    return ApiService.put<Booking>(BOOKING_ENDPOINTS.PAYMENT_SUCCESS(id), data)
+  async getActiveBookings(renterId: string): Promise<Booking[]> {
+    return ApiService.get(
+      `${RENTER_BOOKING_ENDPOINTS.ACTIVE_BOOKINGS}?renterId=${renterId}`,
+    );
   }
 
-  // Start the trip
-  async startTrip(id: string, data: StartTripRequest): Promise<Booking> {
-    return ApiService.put<Booking>(BOOKING_ENDPOINTS.START_TRIP(id), data)
+  async getCompletedBookings(renterId: string): Promise<number> {
+    return ApiService.get(
+      `${RENTER_BOOKING_ENDPOINTS.COMPLETED_BOOKINGS}?renterId=${renterId}`,
+    );
   }
 
-  // End the trip
-  async endTrip(id: string, data: EndTripRequest): Promise<Booking> {
-    return ApiService.put<Booking>(BOOKING_ENDPOINTS.END_TRIP(id), data)
+  async getCurrentTrip(renterId: string): Promise<Booking> {
+    return ApiService.get(
+      `${RENTER_BOOKING_ENDPOINTS.CURRENT_TRIP}?renterId=${renterId}`,
+    );
   }
 
-  // Request trip extension
-  async extendTrip(id: string, data: ExtendTripRequest): Promise<Booking> {
-    return ApiService.put<Booking>(BOOKING_ENDPOINTS.EXTEND_TRIP(id), data)
+  // ================= OWNER ACTIONS =================
+
+  async approveBooking(id: string): Promise<Booking> {
+    return ApiService.put(OWNER_BOOKING_ENDPOINTS.APPROVE_BOOKING(id), {});
   }
 
-  // Cancel booking
-  async cancelBooking(id: string, data: CancelBookingRequest): Promise<Booking> {
-    return ApiService.put<Booking>(BOOKING_ENDPOINTS.CANCEL_BOOKING(id), data)
+  async rejectBooking(
+    id: string,
+    data?: RejectBookingRequest,
+  ): Promise<Booking> {
+    return ApiService.put(
+      OWNER_BOOKING_ENDPOINTS.REJECT_BOOKING(id),
+      data || {},
+    );
   }
 
-  // Calculate price breakdown
-  calculatePrice(
-    startDate: string,
-    endDate: string,
-    startTime: string,
-    endTime: string,
-    pricePerDay: number,
-    pricePerHour: number,
-  ): {
-    days: number
-    hours: number
-    subtotal: number
-    tax: number
-    platformFee: number
-    total: number
-  } {
-    const start = new Date(`${startDate}T${startTime}`)
-    const end = new Date(`${endDate}T${endTime}`)
-    const diffMs = end.getTime() - start.getTime()
-    const totalHours = diffMs / (1000 * 60 * 60)
-    const days = Math.floor(totalHours / 24)
-    const hours = Math.ceil(totalHours % 24)
+  async startTrip(id: string): Promise<Booking> {
+    return ApiService.put(OWNER_BOOKING_ENDPOINTS.START_TRIP(id), {});
+  }
 
-    const subtotal = days * pricePerDay + hours * pricePerHour
-    const tax = subtotal * 0.18 // 18% GST
-    const platformFee = subtotal * 0.05 // 5% platform fee
-    const total = subtotal + tax + platformFee
+  async endTrip(id: string): Promise<Booking> {
+    return ApiService.put(OWNER_BOOKING_ENDPOINTS.END_TRIP(id), {});
+  }
 
-    return {
-      days,
-      hours,
-      subtotal: Number.parseFloat(subtotal.toFixed(2)),
-      tax: Number.parseFloat(tax.toFixed(2)),
-      platformFee: Number.parseFloat(platformFee.toFixed(2)),
-      total: Number.parseFloat(total.toFixed(2)),
-    }
+  // ================= OWNER DASHBOARD =================
+
+  async countOwnerBookings(ownerId: string): Promise<number> {
+    return ApiService.get(
+      `${OWNER_BOOKING_ENDPOINTS.COUNT_OWNER_BOOKINGS}?ownerId=${ownerId}`,
+    );
+  }
+
+  async getOngoingBookings(ownerId: string): Promise<Booking[]> {
+    return ApiService.get(
+      `${OWNER_BOOKING_ENDPOINTS.ONGOING_BOOKINGS}?ownerId=${ownerId}`,
+    );
+  }
+
+  async getBookingStats(ownerId: string): Promise<any> {
+    return ApiService.get(
+      `${OWNER_BOOKING_ENDPOINTS.BOOKING_STATS}?ownerId=${ownerId}`,
+    );
+  }
+
+  async getOwnerCurrentTrip(ownerId: string): Promise<any> {
+    return ApiService.get(
+      `${OWNER_BOOKING_ENDPOINTS.CURRENT_TRIP}?ownerId=${ownerId}`,
+    );
+  }
+
+  async getDisputeCount(ownerId: string): Promise<number> {
+    return ApiService.get(
+      `${OWNER_BOOKING_ENDPOINTS.DISPUTE_COUNT}?ownerId=${ownerId}`,
+    );
   }
 }
 
-export default new BookingService()
+export default new BookingService();
