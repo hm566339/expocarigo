@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native"
+    ActivityIndicator,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
-import { useTheme } from "../../context/ThemeContext"
-import { InputField } from "../../components/owner-profile"
-import { useAuth } from "../../context/AuthContext"
-import CarOwnerService from "../../services/api/car-owner.service"
+import { InputField } from "../../components/owner-profile";
+import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
+import CarOwnerService from "../../services/api/car-owner.service";
 
 /* ================= BLOOD GROUP OPTIONS ================= */
 const BLOOD_GROUP_OPTIONS = [
@@ -25,14 +25,14 @@ const BLOOD_GROUP_OPTIONS = [
   { label: "AB−", value: "AB_NEGATIVE" },
   { label: "O+", value: "O_POSITIVE" },
   { label: "O−", value: "O_NEGATIVE" },
-]
+];
 
 export const UpdateCarOwnerProfileScreen = ({ navigation }: any) => {
-  const { colors } = useTheme()
-  const { user } = useAuth()
+  const { colors } = useTheme();
+  const { user } = useAuth();
 
-  const ownerId = user?.id
-  const [loading, setLoading] = useState(false)
+  const ownerId = user?.id;
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -43,22 +43,21 @@ export const UpdateCarOwnerProfileScreen = ({ navigation }: any) => {
     aadhaarNumber: "",
     drivingLicenseNumber: "",
     bloodGroup: "", // ENUM VALUE
-  })
+  });
 
   /* ---------- FORM VALIDATION ---------- */
   const isFormValid =
     formData.name.trim().length > 0 &&
     formData.email.trim().length > 0 &&
-    formData.bloodGroup.length > 0
+    formData.bloodGroup.length > 0;
 
   /* ---------- LOAD PROFILE ---------- */
   useEffect(() => {
-    if (!ownerId) return
+    if (!ownerId) return;
 
-    setLoading(true)
-    CarOwnerService
-      .getOwner(ownerId.toString())
-      .then(owner => {
+    setLoading(true);
+    CarOwnerService.getOwner(ownerId.toString())
+      .then((owner) => {
         setFormData({
           name: owner.name || "",
           email: owner.email || "",
@@ -68,29 +67,26 @@ export const UpdateCarOwnerProfileScreen = ({ navigation }: any) => {
           aadhaarNumber: owner.aadhaarNumber || "",
           drivingLicenseNumber: owner.drivingLicenseNumber || "",
           bloodGroup: owner.bloodGroup || "",
-        })
+        });
       })
-      .catch(err => console.log("Load owner failed:", err))
-      .finally(() => setLoading(false))
-  }, [ownerId])
+      .catch((err) => console.log("Load owner failed:", err))
+      .finally(() => setLoading(false));
+  }, [ownerId]);
 
   /* ---------- SAVE PROFILE ---------- */
   const handleSave = async () => {
-    if (!ownerId || !isFormValid) return
+    if (!ownerId || !isFormValid) return;
 
-    setLoading(true)
+    setLoading(true);
     try {
-      await CarOwnerService.updateProfile(
-        ownerId.toString(),
-        formData
-      )
-      navigation.goBack()
+      await CarOwnerService.updateProfile(ownerId.toString(), formData);
+      navigation.goBack();
     } catch (err) {
-      console.log("Update failed:", err)
+      console.log("Update failed:", err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   /* ---------- AUTH GUARD ---------- */
   if (!ownerId) {
@@ -98,12 +94,15 @@ export const UpdateCarOwnerProfileScreen = ({ navigation }: any) => {
       <View style={styles.center}>
         <Text>User not authenticated</Text>
       </View>
-    )
+    );
   }
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <Text style={[styles.title, { color: colors.text }]}>
             Update Profile
@@ -117,14 +116,14 @@ export const UpdateCarOwnerProfileScreen = ({ navigation }: any) => {
           <InputField
             label="Full Name"
             value={formData.name}
-            onChangeText={text => setFormData({ ...formData, name: text })}
+            onChangeText={(text) => setFormData({ ...formData, name: text })}
             required
           />
 
           <InputField
             label="Email"
             value={formData.email}
-            onChangeText={text => setFormData({ ...formData, email: text })}
+            onChangeText={(text) => setFormData({ ...formData, email: text })}
             keyboardType="email-address"
             required
           />
@@ -132,28 +131,28 @@ export const UpdateCarOwnerProfileScreen = ({ navigation }: any) => {
           <InputField
             label="Date of Birth"
             value={formData.dob}
-            onChangeText={text => setFormData({ ...formData, dob: text })}
+            onChangeText={(text) => setFormData({ ...formData, dob: text })}
             placeholder="YYYY-MM-DD"
           />
 
           <InputField
             label="Phone"
             value={formData.phone}
-            onChangeText={text => setFormData({ ...formData, phone: text })}
+            onChangeText={(text) => setFormData({ ...formData, phone: text })}
             keyboardType="phone-pad"
           />
 
           <InputField
             label="Address"
             value={formData.address}
-            onChangeText={text => setFormData({ ...formData, address: text })}
+            onChangeText={(text) => setFormData({ ...formData, address: text })}
             multiline
           />
 
           <InputField
             label="Aadhaar Number"
             value={formData.aadhaarNumber}
-            onChangeText={text =>
+            onChangeText={(text) =>
               setFormData({ ...formData, aadhaarNumber: text })
             }
             keyboardType="numeric"
@@ -162,7 +161,7 @@ export const UpdateCarOwnerProfileScreen = ({ navigation }: any) => {
           <InputField
             label="Driving License Number"
             value={formData.drivingLicenseNumber}
-            onChangeText={text =>
+            onChangeText={(text) =>
               setFormData({ ...formData, drivingLicenseNumber: text })
             }
           />
@@ -173,7 +172,7 @@ export const UpdateCarOwnerProfileScreen = ({ navigation }: any) => {
           </Text>
 
           <View style={styles.bloodGroupContainer}>
-            {BLOOD_GROUP_OPTIONS.map(option => (
+            {BLOOD_GROUP_OPTIONS.map((option) => (
               <TouchableOpacity
                 key={option.value}
                 style={[
@@ -227,8 +226,8 @@ export const UpdateCarOwnerProfileScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
     </View>
-  )
-}
+  );
+};
 
 /* ================= STYLES ================= */
 const styles = StyleSheet.create({
@@ -277,4 +276,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-})
+});

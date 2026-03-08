@@ -176,3 +176,45 @@ export interface EarningsSummary {
   totalEarnings: number
   walletBalance: number
 }
+
+
+export interface DashboardData {
+  owner: {
+    ownerId: number;
+    name: string;
+    rating: number;
+    kycStatus: "PENDING" | "APPROVED" | "REJECTED";
+    blocked: boolean;
+  };
+
+  bookingStats: {
+    total: number;
+    today: number;
+    ongoing: number;
+    upcoming: number;
+    completed: number;
+    cancelled: number;
+    disputed: number;
+  };
+
+  vehicleStats: {
+    total: number;
+    active: number;
+    pendingKyc: number;
+    blocked: number;
+  };
+
+  earnings: {
+    today: number;
+    thisMonth: number;
+    lifetime: number;
+    walletBalance: number;
+  };
+
+  alerts: {
+    insuranceExpiring: number;
+    vehicleKycPending: number;
+    payoutPending: number;
+    disputes: number;
+  };
+}

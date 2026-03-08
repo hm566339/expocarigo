@@ -1,17 +1,22 @@
-"use client"
+"use client";
 
-import type React from "react"
+import React from "react";
 
-import { TouchableOpacity, Text, ActivityIndicator, StyleSheet } from "react-native"
-import { useTheme } from "../../context/ThemeContext"
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import { useTheme } from "../../context/ThemeContext";
 
 interface ButtonProps {
-  title: string
-  onPress: () => void
-  variant?: "primary" | "secondary" | "outline"
-  disabled?: boolean
-  loading?: boolean
-  fullWidth?: boolean
+  title: string;
+  onPress: () => void;
+  variant?: "primary" | "secondary" | "outline";
+  disabled?: boolean;
+  loading?: boolean;
+  fullWidth?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -22,20 +27,20 @@ export const Button: React.FC<ButtonProps> = ({
   loading = false,
   fullWidth = false,
 }) => {
-  const { colors } = useTheme()
+  const { colors } = useTheme();
 
   const getBackgroundColor = () => {
-    if (disabled) return colors.disabled
-    if (variant === "primary") return colors.primary
-    if (variant === "secondary") return colors.secondary
-    return "transparent"
-  }
+    if (disabled) return colors.disabled;
+    if (variant === "primary") return colors.primary;
+    if (variant === "secondary") return colors.secondary;
+    return "transparent";
+  };
 
   const getTextColor = () => {
-    if (disabled) return colors.textSecondary
-    if (variant === "outline") return colors.primary
-    return "#FFFFFF"
-  }
+    if (disabled) return colors.textSecondary;
+    if (variant === "outline") return colors.primary;
+    return "#FFFFFF";
+  };
 
   return (
     <TouchableOpacity
@@ -55,11 +60,13 @@ export const Button: React.FC<ButtonProps> = ({
       {loading ? (
         <ActivityIndicator color={getTextColor()} />
       ) : (
-        <Text style={[styles.buttonText, { color: getTextColor() }]}>{title}</Text>
+        <Text style={[styles.buttonText, { color: getTextColor() }]}>
+          {title}
+        </Text>
       )}
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   button: {
@@ -74,4 +81,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-})
+});

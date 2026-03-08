@@ -1,7 +1,7 @@
 "use client"
 
-import type React from "react"
-import { View, Text, StyleSheet } from "react-native"
+import React from "react"
+import { StyleSheet, Text, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { useTheme } from "../../context/ThemeContext"
 
@@ -16,15 +16,15 @@ export const InsuranceBadge: React.FC<InsuranceBadgeProps> = ({ isInsured, size 
 
   const config = isInsured
     ? {
-        color: "#10B981",
-        icon: "shield-check",
-        label: "Insured",
-      }
+      color: "#10B981",
+      icon: "shield-check",
+      label: "Insured",
+    }
     : {
-        color: "#EF4444",
-        icon: "shield-off",
-        label: "Not Insured",
-      }
+      color: "#EF4444",
+      icon: "shield-off",
+      label: "Not Insured",
+    }
 
   return (
     <View style={[styles.badge, { backgroundColor: config.color + "15", borderColor: config.color }]}>

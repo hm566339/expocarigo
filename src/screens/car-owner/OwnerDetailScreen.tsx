@@ -1,96 +1,169 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
-import { useTheme } from "../../context/ThemeContext"
-import { ProfileInfoCard, StatusBadge, ConfirmationDialog } from "../../components/owner-profile"
-import type { CarOwner } from "../../types/carOwner"
-import { mockCarOwners } from "../../data/mockCarOwners"
+import React, { useEffect, useState } from "react";
+import {
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import {
+    ConfirmationDialog,
+    ProfileInfoCard,
+    StatusBadge,
+} from "../../components/owner-profile";
+import { useTheme } from "../../context/ThemeContext";
+import { mockCarOwners } from "../../data/mockCarOwners";
+import type { CarOwner } from "../../types/carOwner";
 
 export const OwnerDetailScreen = ({ navigation, route }: any) => {
-  const { colors } = useTheme()
-  const { ownerId } = route.params
-  const [owner, setOwner] = useState<CarOwner | null>(null)
-  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
+  const { colors } = useTheme();
+  const { ownerId } = route.params;
+  const [owner, setOwner] = useState<CarOwner | null>(null);
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
   useEffect(() => {
     // Mock API call: GET /car-owners/{id}
-    const foundOwner = mockCarOwners.find((o) => o.id === ownerId) || mockCarOwners[0]
-    setOwner(foundOwner)
-  }, [ownerId])
+    const foundOwner =
+      mockCarOwners.find((o) => o.id === ownerId) || mockCarOwners[0];
+    setOwner(foundOwner);
+  }, [ownerId]);
 
   const handleDelete = async () => {
     // Mock API call: DELETE /car-owners/{id}
     return new Promise<void>((resolve) => {
       setTimeout(() => {
-        resolve()
-        navigation.goBack()
-      }, 1000)
-    })
-  }
+        resolve();
+        navigation.goBack();
+      }, 1000);
+    });
+  };
 
   if (!owner) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <Text style={{ color: colors.text }}>Loading...</Text>
       </View>
-    )
+    );
   }
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Profile Header */}
         <View style={[styles.headerCard, { backgroundColor: colors.surface }]}>
           <View style={styles.avatarPlaceholder}>
-            <Text style={styles.avatarText}>{owner.name.charAt(0).toUpperCase()}</Text>
+            <Text style={styles.avatarText}>
+              {owner.name.charAt(0).toUpperCase()}
+            </Text>
           </View>
-          <Text style={[styles.name, { color: colors.text }]}>{owner.name}</Text>
-          <Text style={[styles.id, { color: colors.textSecondary }]}>ID: {owner.id}</Text>
+          <Text style={[styles.name, { color: colors.text }]}>
+            {owner.name}
+          </Text>
+          <Text style={[styles.id, { color: colors.textSecondary }]}>
+            ID: {owner.id}
+          </Text>
 
           <View style={styles.statusRow}>
-            <StatusBadge status={owner.kycStatus.overall === "approved" ? "verified" : "pending"} label="KYC" />
-            <View style={[styles.ratingBadge, { backgroundColor: colors.success + "20" }]}>
-              <Text style={[styles.ratingText, { color: colors.success }]}>★ {owner.rating.toFixed(1)}</Text>
+            <StatusBadge
+              status={
+                owner.kycStatus.overall === "approved" ? "verified" : "pending"
+              }
+              label="KYC"
+            />
+            <View
+              style={[
+                styles.ratingBadge,
+                { backgroundColor: colors.success + "20" },
+              ]}
+            >
+              <Text style={[styles.ratingText, { color: colors.success }]}>
+                ★ {owner.rating.toFixed(1)}
+              </Text>
             </View>
           </View>
         </View>
 
         {/* Contact Details */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Contact Information</Text>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Contact Information
+          </Text>
           <ProfileInfoCard label="Email" value={owner.email} />
-          <ProfileInfoCard label="Phone" value={owner.phone || "Not provided"} />
-          <ProfileInfoCard label="Address" value={owner.address || "Not provided"} />
+          <ProfileInfoCard
+            label="Phone"
+            value={owner.phone || "Not provided"}
+          />
+          <ProfileInfoCard
+            label="Address"
+            value={owner.address || "Not provided"}
+          />
         </View>
 
         {/* KYC & Personal */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Personal & KYC</Text>
-          <ProfileInfoCard label="Date of Birth" value={owner.dob || "Not provided"} />
-          <ProfileInfoCard label="Blood Group" value={owner.bloodGroup || "Not provided"} />
-          <ProfileInfoCard label="Aadhaar Number" value={owner.aadhaarNumber || "Not provided"} />
-          <ProfileInfoCard label="Driving License" value={owner.drivingLicenseNumber || "Not provided"} />
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Personal & KYC
+          </Text>
+          <ProfileInfoCard
+            label="Date of Birth"
+            value={owner.dob || "Not provided"}
+          />
+          <ProfileInfoCard
+            label="Blood Group"
+            value={owner.bloodGroup || "Not provided"}
+          />
+          <ProfileInfoCard
+            label="Aadhaar Number"
+            value={owner.aadhaarNumber || "Not provided"}
+          />
+          <ProfileInfoCard
+            label="Driving License"
+            value={owner.drivingLicenseNumber || "Not provided"}
+          />
         </View>
 
         {/* Financial Info */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Financial Details</Text>
-          <View style={[styles.walletCard, { backgroundColor: colors.primary }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Financial Details
+          </Text>
+          <View
+            style={[styles.walletCard, { backgroundColor: colors.primary }]}
+          >
             <Text style={styles.walletLabel}>Wallet Balance</Text>
-            <Text style={styles.walletBalance}>₹{owner.wallet.balance.toLocaleString("en-IN")}</Text>
+            <Text style={styles.walletBalance}>
+              ₹{owner.wallet.balance.toLocaleString("en-IN")}
+            </Text>
           </View>
 
           {owner.bankDetails && (
-            <View style={[styles.bankCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Text style={[styles.bankTitle, { color: colors.text }]}>Bank Account</Text>
-              <Text style={[styles.bankDetail, { color: colors.textSecondary }]}>
+            <View
+              style={[
+                styles.bankCard,
+                { backgroundColor: colors.surface, borderColor: colors.border },
+              ]}
+            >
+              <Text style={[styles.bankTitle, { color: colors.text }]}>
+                Bank Account
+              </Text>
+              <Text
+                style={[styles.bankDetail, { color: colors.textSecondary }]}
+              >
                 {owner.bankDetails.accountHolderName}
               </Text>
-              <Text style={[styles.bankDetail, { color: colors.textSecondary }]}>
+              <Text
+                style={[styles.bankDetail, { color: colors.textSecondary }]}
+              >
                 Account: ••••{owner.bankDetails.accountNumber.slice(-4)}
               </Text>
-              <Text style={[styles.bankDetail, { color: colors.textSecondary }]}>
+              <Text
+                style={[styles.bankDetail, { color: colors.textSecondary }]}
+              >
                 IFSC: {owner.bankDetails.ifscCode}
               </Text>
             </View>
@@ -99,22 +172,38 @@ export const OwnerDetailScreen = ({ navigation, route }: any) => {
 
         {/* Stats */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Statistics</Text>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Statistics
+          </Text>
           <View style={styles.statsRow}>
-            <View style={[styles.statCard, { backgroundColor: colors.surface }]}>
-              <Text style={[styles.statValue, { color: colors.text }]}>{owner.tripsCompleted}</Text>
-              <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Trips</Text>
+            <View
+              style={[styles.statCard, { backgroundColor: colors.surface }]}
+            >
+              <Text style={[styles.statValue, { color: colors.text }]}>
+                {owner.tripsCompleted}
+              </Text>
+              <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
+                Trips
+              </Text>
             </View>
-            <View style={[styles.statCard, { backgroundColor: colors.surface }]}>
-              <Text style={[styles.statValue, { color: colors.text }]}>{owner.rating.toFixed(1)}</Text>
-              <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Rating</Text>
+            <View
+              style={[styles.statCard, { backgroundColor: colors.surface }]}
+            >
+              <Text style={[styles.statValue, { color: colors.text }]}>
+                {owner.rating.toFixed(1)}
+              </Text>
+              <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
+                Rating
+              </Text>
             </View>
           </View>
         </View>
 
         {/* Danger Zone */}
         <View style={styles.section}>
-          <Text style={[styles.dangerTitle, { color: colors.error }]}>Danger Zone</Text>
+          <Text style={[styles.dangerTitle, { color: colors.error }]}>
+            Danger Zone
+          </Text>
           <TouchableOpacity
             style={[styles.deleteButton, { backgroundColor: colors.error }]}
             onPress={() => setDeleteDialogVisible(true)}
@@ -135,8 +224,8 @@ export const OwnerDetailScreen = ({ navigation, route }: any) => {
         danger
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -260,4 +349,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "700",
   },
-})
+});
