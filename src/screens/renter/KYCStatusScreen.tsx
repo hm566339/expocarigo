@@ -1,9 +1,8 @@
 "use client"
 
 // KYC Status Screen - View KYC verification status with detailed feedback
-import type React from "react"
-import { useState, useEffect } from "react"
-import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, ScrollView } from "react-native"
+import React, { useEffect, useState } from "react"
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useAuth } from "../../context/AuthContext"
 import RenterService from "../../services/api/renter.service"
 import type { Renter } from "../../types/renter.types"

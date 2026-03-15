@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { Button } from "../../../components/ui/Button"
 import InputField from "../../../components/ui/InputField"

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import type { NavigationProp } from "../../../navigation/types"
 import { useBookingStore } from "../../../services/storage/store/booking.store"

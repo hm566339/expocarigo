@@ -1,8 +1,7 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, ActivityIndicator } from "react-native"
+import React, { useState } from "react"
+import { ActivityIndicator, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useTheme } from "../../context/ThemeContext"
 
 interface WalletActionModalProps {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { Button } from "../../../components/ui/Button"
 import ErrorBanner from "../../../components/ui/ErrorBanner"

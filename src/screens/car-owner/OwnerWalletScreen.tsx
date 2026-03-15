@@ -1,28 +1,37 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
-import { useTheme } from "../../context/ThemeContext"
-import { WalletActionModal } from "../../components/owner-profile"
-import { mockCarOwners } from "../../data/mockCarOwners"
+import React, { useEffect, useState } from "react";
+import {
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import { WalletActionModal } from "../../components/owner-profile";
+import { useTheme } from "../../context/ThemeContext";
+import { mockCarOwners } from "../../data/mockCarOwners";
 
 export const OwnerWalletScreen = ({ route }: any) => {
-  const { colors } = useTheme()
-  const { ownerId } = route.params
-  const [balance, setBalance] = useState(0)
-  const [modalVisible, setModalVisible] = useState(false)
-  const [currentAction, setCurrentAction] = useState<"add" | "deduct" | "withdraw">("add")
+  const { colors } = useTheme();
+  const { ownerId } = route.params;
+  const [balance, setBalance] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentAction, setCurrentAction] = useState<
+    "add" | "deduct" | "withdraw"
+  >("add");
 
   useEffect(() => {
     // Mock API call to get wallet balance
-    const owner = mockCarOwners.find((o) => o.id === ownerId) || mockCarOwners[0]
-    setBalance(owner.wallet.balance)
-  }, [ownerId])
+    const owner =
+      mockCarOwners.find((o) => o.id === ownerId) || mockCarOwners[0];
+    setBalance(owner.wallet.balance);
+  }, [ownerId]);
 
   const handleAction = (action: "add" | "deduct" | "withdraw") => {
-    setCurrentAction(action)
-    setModalVisible(true)
-  }
+    setCurrentAction(action);
+    setModalVisible(true);
+  };
 
   const handleConfirm = async (amount: number) => {
     // Mock API calls
@@ -33,64 +42,115 @@ export const OwnerWalletScreen = ({ route }: any) => {
     return new Promise<void>((resolve) => {
       setTimeout(() => {
         if (currentAction === "add") {
-          setBalance((prev) => prev + amount)
+          setBalance((prev) => prev + amount);
         } else {
-          setBalance((prev) => Math.max(0, prev - amount))
+          setBalance((prev) => Math.max(0, prev - amount));
         }
-        resolve()
-      }, 1000)
-    })
-  }
+        resolve();
+      }, 1000);
+    });
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Wallet Balance Card */}
         <View style={[styles.balanceCard, { backgroundColor: colors.primary }]}>
           <Text style={styles.balanceLabel}>Wallet Balance</Text>
-          <Text style={styles.balanceAmount}>₹{balance.toLocaleString("en-IN")}</Text>
-          <Text style={styles.balanceSubtext}>Available for withdrawals and bookings</Text>
+          <Text style={styles.balanceAmount}>
+            ₹{balance.toLocaleString("en-IN")}
+          </Text>
+          <Text style={styles.balanceSubtext}>
+            Available for withdrawals and bookings
+          </Text>
         </View>
 
         {/* Action Buttons */}
         <View style={styles.actionsContainer}>
           <TouchableOpacity
-            style={[styles.actionCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            style={[
+              styles.actionCard,
+              { backgroundColor: colors.surface, borderColor: colors.border },
+            ]}
             onPress={() => handleAction("add")}
           >
-            <View style={[styles.actionIcon, { backgroundColor: colors.success + "20" }]}>
-              <Text style={[styles.actionIconText, { color: colors.success }]}>+</Text>
+            <View
+              style={[
+                styles.actionIcon,
+                { backgroundColor: colors.success + "20" },
+              ]}
+            >
+              <Text style={[styles.actionIconText, { color: colors.success }]}>
+                +
+              </Text>
             </View>
-            <Text style={[styles.actionText, { color: colors.text }]}>Add Money</Text>
+            <Text style={[styles.actionText, { color: colors.text }]}>
+              Add Money
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.actionCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            style={[
+              styles.actionCard,
+              { backgroundColor: colors.surface, borderColor: colors.border },
+            ]}
             onPress={() => handleAction("deduct")}
           >
-            <View style={[styles.actionIcon, { backgroundColor: colors.error + "20" }]}>
-              <Text style={[styles.actionIconText, { color: colors.error }]}>-</Text>
+            <View
+              style={[
+                styles.actionIcon,
+                { backgroundColor: colors.error + "20" },
+              ]}
+            >
+              <Text style={[styles.actionIconText, { color: colors.error }]}>
+                -
+              </Text>
             </View>
-            <Text style={[styles.actionText, { color: colors.text }]}>Deduct Money</Text>
+            <Text style={[styles.actionText, { color: colors.text }]}>
+              Deduct Money
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.actionCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            style={[
+              styles.actionCard,
+              { backgroundColor: colors.surface, borderColor: colors.border },
+            ]}
             onPress={() => handleAction("withdraw")}
           >
-            <View style={[styles.actionIcon, { backgroundColor: colors.primary + "20" }]}>
-              <Text style={[styles.actionIconText, { color: colors.primary }]}>↑</Text>
+            <View
+              style={[
+                styles.actionIcon,
+                { backgroundColor: colors.primary + "20" },
+              ]}
+            >
+              <Text style={[styles.actionIconText, { color: colors.primary }]}>
+                ↑
+              </Text>
             </View>
-            <Text style={[styles.actionText, { color: colors.text }]}>Withdraw</Text>
+            <Text style={[styles.actionText, { color: colors.text }]}>
+              Withdraw
+            </Text>
           </TouchableOpacity>
         </View>
 
         {/* Info Section */}
-        <View style={[styles.infoSection, { backgroundColor: colors.surfaceVariant }]}>
-          <Text style={[styles.infoTitle, { color: colors.text }]}>How Wallet Works</Text>
+        <View
+          style={[
+            styles.infoSection,
+            { backgroundColor: colors.surfaceVariant },
+          ]}
+        >
+          <Text style={[styles.infoTitle, { color: colors.text }]}>
+            How Wallet Works
+          </Text>
           <Text style={[styles.infoText, { color: colors.textSecondary }]}>
-            • Add money to your wallet for quick bookings{"\n"}• Withdraw earnings to your linked bank account{"\n"}•
-            All transactions are secure and instant{"\n"}• Minimum withdrawal amount: ₹500
+            • Add money to your wallet for quick bookings{"\n"}• Withdraw
+            earnings to your linked bank account{"\n"}• All transactions are
+            secure and instant{"\n"}• Minimum withdrawal amount: ₹500
           </Text>
         </View>
       </ScrollView>
@@ -102,8 +162,8 @@ export const OwnerWalletScreen = ({ route }: any) => {
         onConfirm={handleConfirm}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -176,4 +236,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 22,
   },
-})
+});
