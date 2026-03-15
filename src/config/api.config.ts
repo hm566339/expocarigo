@@ -107,15 +107,36 @@ export const RENTER_ENDPOINTS = {
   GET_RENTER_DASHBORD: `/dashboard/renter`,
 };
 
-export const BOOKING_ENDPOINTS = {
-  CREATE_BOOKING: "/bookings",
-  GET_BOOKING: (id: string) => `/bookings/${id}`,
-  LIST_BOOKINGS: "/bookings",
-  APPROVE_BOOKING: (id: string) => `/bookings/${id}/approve`,
-  REJECT_BOOKING: (id: string) => `/bookings/${id}/reject`,
-  CANCEL_BOOKING: (id: string) => `/bookings/${id}/cancel`,
-  START_TRIP: (id: string) => `/bookings/${id}/start-trip`,
-  END_TRIP: (id: string) => `/bookings/${id}/end-trip`,
-  EXTEND_TRIP: (id: string) => `/bookings/${id}/extend-trip`,
-  PAYMENT_SUCCESS: (id: string) => `/bookings/${id}/payment-success`,
+
+
+// ================= OWNER BOOKING ENDPOINTS =================
+
+export const OWNER_BOOKING_ENDPOINTS = {
+  APPROVE_BOOKING: (id: string) => `/owner/bookings/${id}/approve`,
+  REJECT_BOOKING: (id: string) => `/owner/bookings/${id}/reject`,
+  START_TRIP: (id: string) => `/owner/bookings/${id}/start`,
+  END_TRIP: (id: string) => `/owner/bookings/${id}/end`,
+
+  COUNT_OWNER_BOOKINGS: `/owner/bookings/count`,
+  ONGOING_BOOKINGS: `/owner/bookings/ongoing`,
+  BOOKING_STATS: `/owner/bookings/stats`,
+  CURRENT_TRIP: `/owner/bookings/current-trip`,
+  DISPUTE_COUNT: `/owner/bookings/disputes/count`,
+};
+
+// ================= RENTER BOOKING ENDPOINTS =================
+
+export const RENTER_BOOKING_ENDPOINTS = {
+  CREATE_BOOKING: `/renter/bookings`,
+
+  PAYMENT_SUCCESS: (id: string) => `/renter/bookings/${id}/payment-success`,
+
+  CANCEL_BOOKING: (id: string) => `/renter/bookings/${id}/cancel`,
+
+  SUBMIT_REVIEW: (id: string) => `/renter/bookings/${id}/review`,
+
+  COUNT_TOTAL_BOOKINGS: `/renter/bookings/count`,
+  ACTIVE_BOOKINGS: `/renter/bookings/active`,
+  COMPLETED_BOOKINGS: `/renter/bookings/completed`,
+  CURRENT_TRIP: `/renter/bookings/current`,
 };

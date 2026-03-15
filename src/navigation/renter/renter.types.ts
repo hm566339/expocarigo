@@ -38,8 +38,11 @@ export type RenterStackParamList = {
   BookingSummary: {
     vehicleId: string;
     startDate: string;
+    ownerId: number;
     endDate: string;
-    quote: BookingQuote;
+    ratePerHour: number;
+    ratePerDay: number;
+    quote?: BookingQuote;
   };
 
   PaymentScreen: {

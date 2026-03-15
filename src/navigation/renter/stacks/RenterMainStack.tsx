@@ -7,13 +7,14 @@ import { RenterTabNavigator } from "../tabs/RenterTabNavigator";
 
 // import PaymentScreen from "../../../screens/renter/";
 import BookingSummaryScreen from "../../../screens/renters/booking/BookingSummaryScreen";
-import RateOwnerScreen from "../../../screens/renters/rating/RateOwnerScreen";
 import {
   default as ActiveTripScreen,
   default as ExtendTripScreen,
 } from "../../../screens/renters/trip/ExtendTripScreen";
 import TripEndScreen from "../../../screens/renters/trip/TripEndScreen";
 
+import BookingDetailsScreen from "@/src/screens/renters/booking/BookingDetailsScreen";
+import ProfileScreen from "@/src/screens/renters/profile/ProfileScreen";
 import VehicleRentalDetailScreen from "@/src/screens/renters/VehicleRentalDetailScreen";
 import type { RenterStackParamList } from "../renter.types";
 
@@ -26,11 +27,16 @@ export const RenterMainStack: React.FC = () => {
 
       <Stack.Screen name="CarDetail" component={VehicleRentalDetailScreen} />
       <Stack.Screen name="BookingSummary" component={BookingSummaryScreen} />
-      {/* <Stack.Screen name="PaymentScreen" component={PaymentScreen} /> */}
+
+      <Stack.Screen
+        name="BookingDetailsScreen"
+        component={BookingDetailsScreen}
+      />
+
       <Stack.Screen name="ActiveTrip" component={ActiveTripScreen} />
       <Stack.Screen name="TripEnd" component={TripEndScreen} />
       <Stack.Screen name="ExtendTrip" component={ExtendTripScreen} />
-      <Stack.Screen name="RateOwner" component={RateOwnerScreen} />
+      <Stack.Screen name="RateOwner" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };

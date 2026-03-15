@@ -16,6 +16,9 @@ class BookingService {
   // ================= RENTER ACTIONS =================
 
   async createBooking(data: CreateBookingRequest): Promise<Booking> {
+    console.log("🔥 BookingService CALLED");
+    console.log("[BookingService] Creating booking with data:", data);
+
     return ApiService.post(RENTER_BOOKING_ENDPOINTS.CREATE_BOOKING, data);
   }
 
